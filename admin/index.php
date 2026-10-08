@@ -54,7 +54,7 @@ body { font-family: 'Manrope', sans-serif; background: #0f0f0e; min-height: 100v
 
 <form class="login-card" method="post" autocomplete="off">
     <div class="login-logo-wrap">
-    <img src="../img/concept-logo.svg" alt="Concept Design" class="login-logo-img">
+    <img src="../assets/img/concept-logo.svg" alt="Concept Design" class="login-logo-img">
 </div>
 <div class="login-sub">панель управления</div>
 
