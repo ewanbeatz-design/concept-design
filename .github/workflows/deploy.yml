@@ -1,0 +1,28 @@
+name: Deploy to REG.RU
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.REG_RU_HOST }}
+          username: ${{ secrets.REG_RU_USER }}
+          key: ${{ secrets.REG_RU_SSH_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.REG_RU_PATH }}
+
+            git fetch origin main
+            git checkout -B main origin/main
+            git reset --hard origin/main
+
+            echo "CONCEPT_DESIGN_DEPLOY_OK"
