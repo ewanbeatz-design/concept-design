@@ -99,6 +99,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
             </div>
         </div>
         <div class="sm-heading-actions">
+            <a class="sm-outline" href="project-edit.php"><i class="bi bi-plus-lg"></i> Создать проект</a>
             <button class="sm-outline" type="button" id="smSave"><i class="bi bi-save2"></i> Сохранить</button>
             <button class="sm-outline" type="button" id="smPrint"><i class="bi bi-file-earmark-arrow-down"></i> Экспорт</button>
             <button class="sm-primary" type="button" data-bs-toggle="modal" data-bs-target="#smTemplateModal"><i class="bi bi-grid-3x3-gap"></i> Готовая смета</button>
