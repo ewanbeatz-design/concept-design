@@ -8,16 +8,17 @@ header('Content-Type: application/json; charset=utf-8');
 /* ============================================================
    НАСТРОЙКИ TELEGRAM
    ============================================================ */
-define('TG_BOT_TOKEN', '6213147800:AAGMW3Kd2KdxDJBhPCuU3SpZe8_WpAFR6Q0');
-define('TG_CHAT_ID',   '-4087238949');
+$tgBotToken = getenv('TG_BOT_TOKEN') ?: '';
+$tgChatId   = getenv('TG_CHAT_ID') ?: '';
 
 /* ============================================================
    ОТПРАВКА В TELEGRAM
    ============================================================ */
 function tg_send(string $text): void {
-    if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
+    global $tgBotToken, $tgChatId;
+    if ($tgBotToken === '' || $tgChatId === '') return;
 
-    $url = 'https://api.telegram.org/bot' . TG_BOT_TOKEN . '/sendMessage';
+    $url = 'https://api.telegram.org/bot' . $tgBotToken . '/sendMessage';
 
     $payload = http_build_query([
         'chat_id'    => TG_CHAT_ID,
