@@ -6,7 +6,7 @@
         <div class="footer-top">
             <div class="footer-brand">
                 <a href="index.php" class="logo logo--light">
-    <img src="/concept-2026/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
+    <img src="/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
 </a>
                 <p>Студия авторского дизайна интерьеров и изготовления мебели под ключ в Кемерово.</p>
             </div>
@@ -35,7 +35,7 @@
         <div class="footer-bottom">
             <span>© 2026 Concept Design</span>
             <span>Design / Furniture / Interior</span>
-           
+            <a href="/admin/" class="footer-admin-link" aria-label="Админ-панель" title="Админ-панель"><i class="bi bi-shield-lock"></i></a>
         </div>
     </div>
 </footer>
@@ -74,7 +74,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="menuCanvas">
     <div class="offcanvas-header">
     <a href="index.php" class="logo logo--light">
-        <img src="/concept-2026/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
+        <img src="/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
     </a>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
 </div>
@@ -166,7 +166,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="/concept-2026/assets/js/app.js"></script>
+<script src="/assets/js/app.js"></script>
 
 </body>
 </html>
