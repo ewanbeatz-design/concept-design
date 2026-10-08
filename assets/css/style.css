@@ -6350,7 +6350,7 @@ main {
     justify-content: center;
     width: 34px;
     height: 34px;
-    margin-right: auto;
+    margin: 0;
     border: 1px solid rgba(255,255,255,.22);
     border-radius: 50%;
     color: inherit;
