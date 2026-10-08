@@ -31,7 +31,7 @@ $projects = $pdo->query("
 <div class="admin-page-head">
     <div></div>
     <a href="project-edit.php" class="admin-btn admin-btn--primary">
-        <i class="bi bi-plus-lg"></i> Добавить проект
+        <i class="bi bi-plus-lg"></i> Создать проект
     </a>
 </div>
 
