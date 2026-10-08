@@ -46,7 +46,6 @@ $projects = $pdo->query("
                     <th>Название</th>
                     <th>Тип</th>
                     <th>Материалы</th>
-                    <th>Смета</th>
                     <th>Просмотры</th>
                     <th>Активен</th>
                     <th></th>
@@ -72,11 +71,6 @@ $projects = $pdo->query("
                     <td><small><?= h($p['type'] ?: '—') ?></small></td>
                     <td>
                         <small><?= (int)$p['mat_count'] ?> / <?= (int)$p['furn_count'] ?></small>
-                    </td>
-                    <td>
-                        <a href="project-edit.php?id=<?= (int)$p['id'] ?>&tab=estimate" class="project-estimate-link">
-                            <i class="bi bi-calculator"></i> Смета
-                        </a>
                     </td>
                     <td><small><i class="bi bi-eye"></i> <?= (int)$p['views'] ?></small></td>
                     <td>
