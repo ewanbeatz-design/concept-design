@@ -36,7 +36,8 @@ if ($pdo) {
 <a href="leads.php" class="<?= in_array($current,['leads.php','lead.php'],true)?'active':'' ?>"><i class="bi bi-inbox"></i><span>Заявки</span><?php if($newCount>0):?><span class="badge-new"><?=$newCount?></span><?php endif;?></a>
 <a href="projects.php" class="<?= in_array($current,['projects.php','project-edit.php'],true)?'active':'' ?>"><i class="bi bi-images"></i><span>Проекты</span></a>
 <a href="interiors-list.php" class="<?= in_array($current,['interiors-list.php','interiors-edit.php'],true)?'active':'' ?>"><i class="bi bi-house-heart"></i><span>Интерьеры</span></a>
-<a href="estimates.php" class="<?= in_array($current,['estimates.php','estimate-edit.php'],true)?'active':'' ?>"><i class="bi bi-calculator"></i><span>Сметы</span></a>\n<a href="quick-estimate.php" class="<?= $current==='quick-estimate.php'?'active':'' ?>"><i class="bi bi-box-seam"></i><span>Каталог</span></a>
+<a href="estimates.php" class="<?= in_array($current,['estimates.php','estimate-edit.php'],true)?'active':'' ?>"><i class="bi bi-calculator"></i><span>Сметы</span></a>
+<a href="quick-estimate.php" class="<?= $current==='quick-estimate.php'?'active':'' ?>"><i class="bi bi-box-seam"></i><span>Каталог</span></a>
 <a href="settings.php" class="<?= $current==='settings.php'?'active':'' ?>"><i class="bi bi-gear"></i><span>Настройки</span></a>
 </nav>
 <div class="admin-user"><div class="admin-user-info"><div class="admin-user-avatar"><?=mb_strtoupper(mb_substr($user['username']??'A',0,1))?></div><div><strong><?=h($user['username']??'admin')?></strong><small>администратор</small></div></div><a href="logout.php" class="admin-logout" title="Выйти"><i class="bi bi-box-arrow-right"></i></a></div>
