@@ -1,3 +1,3 @@
 <?php
-header('Location: projects.php');
+header('Location: quick-estimate.php');
 exit;
