@@ -309,7 +309,8 @@ function openProjects(){if(state.currentProjectId){const p=state.projects.find(x
 
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.sections)){state.sections=x.sections;state.winter=!!x.winter;state.tight=!!x.tight;state.custom=num(x.custom)||1;state.method=x.method||'resource';state.projects=Array.isArray(x.projects)?x.projects:[];state.currentProjectId=x.currentProjectId||null;
 if(!state.projects.length && state.sections.length){const p={id:uid(),name:'Мой проект',date:new Date().toLocaleDateString('ru-RU'),sections:JSON.parse(JSON.stringify(state.sections)),winter:state.winter,tight:state.tight,custom:state.custom,method:state.method};state.projects=[p];state.currentProjectId=p.id;}
-}catch(e){}}
+}}
+catch(e){}}
 function section(name='Новый раздел'){return {id:uid(),name,items:[]};}
 function item(name='Новая позиция',unit='шт',price=0,quantity=1){return {id:uid(),name,unit,price:num(price),quantity:Math.max(.001,num(quantity)||1)};}
 
