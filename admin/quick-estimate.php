@@ -195,6 +195,10 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
 
 <div class="modal fade" id="smStageModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow">ЭТАПЫ</div><h5 class="modal-title">Прогресс проекта</h5><small>Укажите количество выполненных этапов.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smStageProjectId"><label><span style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px">Выполнено этапов</span><input id="smStageValue" class="form-control" type="number" min="0" max="9" step="1"></label></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smStageSave">Сохранить</button></div></div></div></div>
 
+<div class="modal fade" id="smEntryModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow" id="smEntryEyebrow">РУЧНОЙ ВВОД</div><h5 class="modal-title" id="smEntryTitle">Добавить позицию</h5><small id="smEntryHint">Заполните параметры позиции.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smEntrySid"><input type="hidden" id="smEntryIid"><div class="sm-form-grid"><label class="sm-form-wide"><span>Наименование</span><input id="smEntryName" class="form-control" placeholder="Например, Монтаж столешницы"></label><label><span>Количество</span><input id="smEntryQty" class="form-control" type="number" min=".001" step=".001" value="1"></label><label><span>Единица измерения</span><input id="smEntryUnit" class="form-control" value="шт" placeholder="шт, м, м²..."></label><label class="sm-form-wide"><span>Цена за единицу, ₽</span><input id="smEntryPrice" class="form-control" type="number" min="0" step=".01" value="0"></label></div></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smEntrySave"><i class="bi bi-check2"></i> Сохранить</button></div></div></div></div>
+
+<div class="modal fade" id="smSectionModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow">РАЗДЕЛ СМЕТЫ</div><h5 class="modal-title">Название раздела</h5><small>Например: Корпус, Фасады, Фурнитура.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smSectionId"><label><span style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px">Название</span><input id="smSectionName" class="form-control" placeholder="Новый раздел"></label></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smSectionSave"><i class="bi bi-check2"></i> Сохранить</button></div></div></div></div>
+
 <div class="modal fade" id="smCatalogModal" tabindex="-1">
  <div class="modal-dialog modal-dialog-centered modal-xl">
   <div class="modal-content sm-modal">
@@ -372,24 +376,42 @@ function render(){
  document.getElementById('smGrand').textContent=new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(c.total)+' ₽';
  save();
 }
-function addSection(){state.sections.push(section());render();setTimeout(()=>editSection(state.sections.at(-1).id),0);}
+function addSection(){const s=section();state.sections.push(s);render();setTimeout(()=>editSection(s.id),0);}
 function editSection(id){
  const s=state.sections.find(x=>x.id===id);if(!s)return;
- const name=prompt('Название раздела',s.name);if(name===null)return;
- if(name.trim()){s.name=name.trim();render();}
+ document.getElementById('smSectionId').value=id;
+ document.getElementById('smSectionName').value=s.name;
+ document.getElementById('smSectionSave').dataset.mode='edit';
+ bootstrap.Modal.getOrCreateInstance(document.getElementById('smSectionModal')).show();
+ setTimeout(()=>document.getElementById('smSectionName').focus(),250);
 }
-function manualAdd(sid){
- const name=prompt('Наименование позиции','Новая работа');if(!name)return;
- const quantity=prompt('Количество','1');const unit=prompt('Единица','шт');const price=prompt('Цена','0');
- const s=state.sections.find(x=>x.id===sid);if(s){s.items.push(item(name,unit,price,quantity));render();}
+function openManualEntry(sid,iid=null){
+ const s=state.sections.find(x=>x.id===sid);if(!s)return;
+ const it=iid?s.items.find(x=>x.id===iid):null;
+ document.getElementById('smEntrySid').value=sid;
+ document.getElementById('smEntryIid').value=iid||'';
+ document.getElementById('smEntryName').value=it?.name||'';
+ document.getElementById('smEntryQty').value=it?.quantity||1;
+ document.getElementById('smEntryUnit').value=it?.unit||'шт';
+ document.getElementById('smEntryPrice').value=it?.price||0;
+ document.getElementById('smEntryEyebrow').textContent=it?'РЕДАКТИРОВАНИЕ':'РУЧНОЙ ВВОД';
+ document.getElementById('smEntryTitle').textContent=it?'Изменить позицию':'Добавить вручную';
+ document.getElementById('smEntryHint').textContent=it?'Измените нужные параметры позиции.':'Добавьте работу, материал или услугу без каталога.';
+ document.getElementById('smEntrySave').innerHTML=it?'<i class="bi bi-check2"></i> Сохранить':'<i class="bi bi-plus-lg"></i> Добавить в смету';
+ bootstrap.Modal.getOrCreateInstance(document.getElementById('smEntryModal')).show();
+ setTimeout(()=>document.getElementById('smEntryName').focus(),250);
 }
-function editItem(sid,iid){
- const s=state.sections.find(x=>x.id===sid),it=s?.items.find(x=>x.id===iid);if(!it)return;
- const name=prompt('Наименование',it.name);if(name===null)return;
- const quantity=prompt('Количество',it.quantity);if(quantity===null)return;
- const unit=prompt('Единица',it.unit);if(unit===null)return;
- const price=prompt('Цена',it.price);if(price===null)return;
- it.name=name.trim()||it.name;it.quantity=Math.max(.001,num(quantity)||1);it.unit=unit.trim()||it.unit;it.price=Math.max(0,num(price));render();
+function saveManualEntry(){
+ const sid=document.getElementById('smEntrySid').value,iid=document.getElementById('smEntryIid').value;
+ const s=state.sections.find(x=>x.id===sid);if(!s)return;
+ const name=document.getElementById('smEntryName').value.trim();
+ if(!name){document.getElementById('smEntryName').focus();return;}
+ const quantity=Math.max(.001,num(document.getElementById('smEntryQty').value)||1);
+ const unit=document.getElementById('smEntryUnit').value.trim()||'шт';
+ const price=Math.max(0,num(document.getElementById('smEntryPrice').value));
+ if(iid){const it=s.items.find(x=>x.id===iid);if(it){it.name=name;it.quantity=quantity;it.unit=unit;it.price=price;}}
+ else{s.items.push(item(name,unit,price,quantity));}
+ bootstrap.Modal.getInstance(document.getElementById('smEntryModal'))?.hide();render();
 }
 let selected={sid:null,data:null};
 function openCatalog(sid){selected.sid=sid;selected.data=null;document.getElementById('smSelected').hidden=true;document.getElementById('smCatalogAdd').disabled=true;document.getElementById('smCatalogSearch').value='';filterCatalog();bootstrap.Modal.getOrCreateInstance(document.getElementById('smCatalogModal')).show();setTimeout(()=>document.getElementById('smCatalogSearch').focus(),300);}
@@ -404,10 +426,12 @@ document.addEventListener('click',e=>{
  const g=t.closest('.sm-group'),sid=t.dataset.sid||g?.dataset.sid,action=t.dataset.action;
  if(action==='delete-section'){showConfirm('Удалить раздел?','Раздел и все его позиции будут удалены.','Удалить',()=>{state.sections=state.sections.filter(s=>s.id!==sid);render();});}
  if(action==='catalog')openCatalog(sid);
- if(action==='manual')manualAdd(sid);
- if(action==='edit-item'){const row=t.closest('.sm-row');editItem(sid,row.dataset.iid);}
+ if(action==='manual')openManualEntry(sid);
+ if(action==='edit-item'){const row=t.closest('.sm-row');openManualEntry(sid,row.dataset.iid);}
  if(action==='delete-item'){const row=t.closest('.sm-row');const s=state.sections.find(x=>x.id===sid);if(s)showConfirm('Удалить позицию?','Позиция будет удалена из текущей сметы.','Удалить',()=>{s.items=s.items.filter(i=>i.id!==row.dataset.iid);render();});}
 });
+document.getElementById('smSectionSave').onclick=()=>{const id=document.getElementById('smSectionId').value,name=document.getElementById('smSectionName').value.trim();if(!name){document.getElementById('smSectionName').focus();return;}const s=state.sections.find(x=>x.id===id);if(s)s.name=name;bootstrap.Modal.getInstance(document.getElementById('smSectionModal'))?.hide();render();};
+document.getElementById('smEntrySave').onclick=saveManualEntry;
 document.getElementById('smNewEstimate').onclick=createProject;
 
 document.getElementById('smProjectCreateConfirm').onclick=confirmCreateProject;
