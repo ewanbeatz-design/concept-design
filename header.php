@@ -30,9 +30,9 @@ $isInner = in_array($currentPage, $innerPages, true);
 <meta name="twitter:description" content="<?= h($pageDescription ?? 'Студия авторского дизайна интерьеров и изготовления мебели под ключ в Кемерово.') ?>">
 <meta name="twitter:image" content="https://концепт-дизайн.рф/assets/img/og-image.jpg">
 
-<link rel="icon" type="image/svg+xml" href="/concept-2026/assets/img/favicon.svg">
-<link rel="shortcut icon" href="/concept-2026/assets/img/favicon.svg" type="image/x-icon">
-<link rel="apple-touch-icon" href="/concept-2026/assets/img/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="shortcut icon" href="/assets/img/favicon.svg" type="image/x-icon">
+<link rel="apple-touch-icon" href="/assets/img/favicon.svg">
 <meta name="theme-color" content="#c79d75">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@ $isInner = in_array($currentPage, $innerPages, true);
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
-<link rel="stylesheet" href="/concept-2026/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css">
 
 <script>
 (function () {
@@ -152,17 +152,17 @@ $isInner = in_array($currentPage, $innerPages, true);
 
 <header class="header" id="siteHeader">
     <div class="container">
-        <a href="/concept-2026/index.php" class="logo">
-            <img src="/concept-2026/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
+        <a href="/index.php" class="logo">
+            <img src="/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
         </a>
 
         <nav class="nav">
-            <a href="/concept-2026/projects.php">Проекты</a>
-            <a href="/concept-2026/index.php#furniture">Мебель</a>
-            <a href="/concept-2026/index.php#process">Процесс</a>
-            <a href="/concept-2026/interiors.php">Интерьеры</a>
-            <a href="/concept-2026/index.php#configurator">Рассчитать</a>
-            <a href="/concept-2026/index.php#contact">Контакты</a>
+            <a href="/projects.php">Проекты</a>
+            <a href="/index.php#furniture">Мебель</a>
+            <a href="/index.php#process">Процесс</a>
+            <a href="/interiors.php">Интерьеры</a>
+            <a href="/index.php#configurator">Рассчитать</a>
+            <a href="/index.php#contact">Контакты</a>
         </nav>
 
         <div class="header-right">
