@@ -1,0 +1,64 @@
+# robots.txt для концепт-дизайн.рф
+# Обновлено: 2026-09-26
+
+User-agent: *
+Allow: /
+
+# Закрываем админку и служебные файлы
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /vendor/
+Disallow: /tg_debug.log
+Disallow: /phpmailer_debug.log
+Disallow: /quiz_log.txt
+Disallow: /*?gift_success=
+Disallow: /*?gift_error=
+Disallow: /*?quiz_success=
+Disallow: /*?quiz_error=
+
+# Закрываем динамические параметры от индексации
+Disallow: /*?utm_
+Disallow: /*?from=
+Disallow: /*?ref=
+
+# Разрешаем индексировать CSS, JS, картинки
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/img/
+Allow: /img/
+
+# Яндекс
+User-agent: Yandex
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /vendor/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&from&ref
+Sitemap: https://концепт-дизайн.рф/sitemap.xml
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /vendor/
+Sitemap: https://концепт-дизайн.рф/sitemap.xml
+
+# Общая ссылка на карту сайта
+Sitemap: https://концепт-дизайн.рф/sitemap.xml
+Sitemap: https://концепт-дизайн.рф/turbo.xml
+
+# Служебные боты не индексируют ничего
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Crawl-delay: 1

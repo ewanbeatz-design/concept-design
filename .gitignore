@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.cache/
+.tmp/
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
+*.log

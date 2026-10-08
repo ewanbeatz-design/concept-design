@@ -1,0 +1,63 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/config.php';
+
+header('Content-Type: application/rss+xml; charset=utf-8');
+
+$siteUrl = 'https://концепт-дизайн.рф';
+
+$projects = [];
+if ($pdo) {
+    try {
+        $stmt = $pdo->query("
+            SELECT * FROM projects
+            WHERE is_active = 1
+            ORDER BY created_at DESC
+            LIMIT 50
+        ");
+        $projects = $stmt->fetchAll();
+    } catch (Throwable $e) {}
+}
+
+echo '<?xml version="1.0" encoding="UTF-8"?>';
+?>
+<rss xmlns:yandex="http://news.yandex.ru" xmlns:media="http://search.yahoo.com/mrss/" xmlns:turbo="http://turbo.yandex.ru" version="2.0">
+<channel>
+    <title>CONCEPT Design — проекты</title>
+    <link><?= $siteUrl ?></link>
+    <description>Дизайн интерьеров и мебель на заказ в Кемерово</description>
+    <language>ru</language>
+
+    <?php foreach ($projects as $p): ?>
+    <item turbo="true">
+        <link><?= $siteUrl ?>/project.php?id=<?= (int)$p['id'] ?></link>
+        <turbo:content>
+            <![CDATA[
+            <header>
+                <h1><?= htmlspecialchars($p['title']) ?></h1>
+                <?php if (!empty($p['image_url'])): ?>
+                <figure>
+                    <img src="<?= $siteUrl ?>/<?= htmlspecialchars(ltrim($p['image_url'], '/')) ?>" />
+                </figure>
+                <?php endif; ?>
+            </header>
+            <?php if (!empty($p['description'])): ?>
+            <p><?= htmlspecialchars($p['description']) ?></p>
+            <?php endif; ?>
+            <?php if (!empty($p['area'])): ?>
+            <p><b>Площадь:</b> <?= htmlspecialchars($p['area']) ?></p>
+            <?php endif; ?>
+            <?php if (!empty($p['style'])): ?>
+            <p><b>Стиль:</b> <?= htmlspecialchars($p['style']) ?></p>
+            <?php endif; ?>
+            <?php if (!empty($p['type'])): ?>
+            <p><b>Тип:</b> <?= htmlspecialchars($p['type']) ?></p>
+            <?php endif; ?>
+            <p><a href="<?= $siteUrl ?>/project.php?id=<?= (int)$p['id'] ?>">Открыть проект на сайте</a></p>
+            ]]>
+        </turbo:content>
+    </item>
+    <?php endforeach; ?>
+</channel>
+</rss>

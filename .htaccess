@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# /projects
+RewriteRule ^projects/?$ projects.php [L,QSA]
+
+# /project/slug
+RewriteRule ^project/([a-z0-9-]+)/?$ project.php?slug=$1 [L,QSA]
+
+# /interiors
+RewriteRule ^interiors/?$ interiors.php [L,QSA]
+
+# /interior/slug
+RewriteRule ^interior/([a-z0-9-]+)/?$ interior.php?slug=$1 [L,QSA]
+
+# /facade/slug
+RewriteRule ^facade/([a-z0-9-]+)/?$ facades.php?slug=$1 [L,QSA]
+
+# /privacy
+RewriteRule ^privacy/?$ privacy_policy.php [L,QSA]
