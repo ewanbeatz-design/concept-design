@@ -99,7 +99,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
             </div>
         </div>
         <div class="sm-heading-actions">
-            <a class="sm-outline" href="project-edit.php"><i class="bi bi-plus-lg"></i> Создать проект</a>
+            <button class="sm-primary" type="button" id="smNewEstimate"><i class="bi bi-plus-lg"></i> Создать проект</button>
             <button class="sm-outline" type="button" id="smSave"><i class="bi bi-save2"></i> Сохранить</button>
             <button class="sm-outline" type="button" id="smPrint"><i class="bi bi-file-earmark-arrow-down"></i> Экспорт</button>
             <button class="sm-primary" type="button" data-bs-toggle="modal" data-bs-target="#smTemplateModal"><i class="bi bi-grid-3x3-gap"></i> Готовая смета</button>
@@ -318,6 +318,7 @@ document.addEventListener('click',e=>{
  if(action==='edit-item'){const row=t.closest('.sm-row');editItem(sid,row.dataset.iid);}
  if(action==='delete-item'){const row=t.closest('.sm-row');const s=state.sections.find(x=>x.id===sid);if(s&&confirm('Удалить позицию?')){s.items=s.items.filter(i=>i.id!==row.dataset.iid);render();}}
 });
+document.getElementById('smNewEstimate').onclick=()=>{state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';document.getElementById('smWinter').checked=false;document.getElementById('smTight').checked=false;document.getElementById('smCustom').value=1;document.getElementById('smMethod').value='resource';render();};
 document.getElementById('smAddSection').onclick=addSection;
 document.getElementById('smEmptyAdd')?.addEventListener('click',addSection);
 document.getElementById('smClear').onclick=()=>{if(confirm('Очистить всю текущую смету?')){state.sections=[];state.winter=false;state.tight=false;state.custom=1;render();document.getElementById('smWinter').checked=false;document.getElementById('smTight').checked=false;document.getElementById('smCustom').value=1;}};
