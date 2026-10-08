@@ -207,6 +207,10 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
    </div>
    <div class="modal-body">
     <div class="sm-template-grid" id="smTemplates">
+      <button type="button" class="sm-template" data-template="wardrobe"><span class="sm-template-icon"><i class="bi bi-door-closed"></i></span><strong>Шкаф-купе</strong><small>Корпус · Фасады · Наполнение · Фурнитура</small><b>12 позиций</b></button>
+      <button type="button" class="sm-template" data-template="kitchen"><span class="sm-template-icon"><i class="bi bi-layout-text-sidebar-reverse"></i></span><strong>Кухня</strong><small>Корпус · Фасады · Столешница · Фурнитура</small><b>16 позиций</b></button>
+      <button type="button" class="sm-template" data-template="wardrobe2"><span class="sm-template-icon"><i class="bi bi-grid-3x3-gap"></i></span><strong>Распашной шкаф</strong><small>Корпус · Двери · Полки · Петли · Ручки</small><b>11 позиций</b></button>
+      <button type="button" class="sm-template" data-template="vanity"><span class="sm-template-icon"><i class="bi bi-droplet"></i></span><strong>Тумба под раковину</strong><small>Корпус · Фасады · Столешница · Фурнитура</small><b>9 позиций</b></button>
     </div>
    </div>
    <div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button></div>
