@@ -939,7 +939,7 @@ $facadeCollections = dbRows($pdo,
 
                     <small class="form-consent">
                         Нажимая кнопку, вы соглашаетесь с
-                        <a href="/concept-2026/privacy_policy.php">политикой конфиденциальности</a>
+                        <a href="/privacy">политикой конфиденциальности</a>
                         и обработкой персональных данных.
                     </small>
                 </form>
