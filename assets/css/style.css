@@ -6345,6 +6345,7 @@ main {
 
 /* Footer admin link */
 .footer-bottom .footer-admin-link {
+    order: -1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
