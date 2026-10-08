@@ -6344,10 +6344,6 @@ main {
 }
 
 /* Footer admin link */
-.footer-bottom {
-    position: relative;
-}
-
 .footer-bottom .footer-admin-link {
     display: inline-flex;
     align-items: center;
@@ -6361,15 +6357,12 @@ main {
     text-decoration: none;
     opacity: .65;
     transition: opacity .25s ease, border-color .25s ease, transform .25s ease;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
     z-index: 5;
 }
 
 .footer-bottom .footer-admin-link:hover {
     opacity: 1;
     border-color: currentColor;
-    transform: translateY(calc(-50% - 2px));
+    transform: translateY(-2px);
 }
