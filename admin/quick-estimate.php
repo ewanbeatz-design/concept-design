@@ -261,7 +261,7 @@ const money=n=>new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFra
 const num=n=>{const x=Number(String(n??'').replace(',','.'));return Number.isFinite(x)?x:0};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function save(){if(state.currentProjectId){const p=state.projects.find(x=>x.id===state.currentProjectId);if(p){p.sections=JSON.parse(JSON.stringify(state.sections));p.winter=state.winter;p.tight=state.tight;p.custom=state.custom;p.method=state.method;}}localStorage.setItem(KEY,JSON.stringify(state));}
 function projectTotal(p){let d=0;(p.sections||[]).forEach(s=>(s.items||[]).forEach(i=>d+=num(i.quantity)*num(i.price)));const coeff=(p.winter?1.12:1)*(p.tight?1.08:1)*(Math.max(.001,num(p.custom)||1));const base=d*coeff,over=base*.15,profit=base*.08;return base+over+profit+(base+over+profit)*.2;}
 function snapshotCurrent(){return JSON.parse(JSON.stringify({sections:state.sections,winter:state.winter,tight:state.tight,custom:state.custom,method:state.method}));}
 function renderProjects(){
@@ -299,7 +299,9 @@ function openEstimate(){
 }
 function openProjects(){if(state.currentProjectId){const p=state.projects.find(x=>x.id===state.currentProjectId);if(p){p.sections=snapshotCurrent().sections;p.winter=state.winter;p.tight=state.tight;p.custom=state.custom;p.method=state.method;}}save();document.getElementById('smEstimateApp').style.display='none';document.getElementById('smProjectsView').style.display='block';renderProjects();}
 
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.sections)){state.sections=x.sections;state.winter=!!x.winter;state.tight=!!x.tight;state.custom=num(x.custom)||1;state.method=x.method||'resource';state.projects=Array.isArray(x.projects)?x.projects:[];state.currentProjectId=x.currentProjectId||null;}}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.sections)){state.sections=x.sections;state.winter=!!x.winter;state.tight=!!x.tight;state.custom=num(x.custom)||1;state.method=x.method||'resource';state.projects=Array.isArray(x.projects)?x.projects:[];state.currentProjectId=x.currentProjectId||null;
+if(!state.projects.length && state.sections.length){const p={id:uid(),name:'Мой проект',date:new Date().toLocaleDateString('ru-RU'),sections:JSON.parse(JSON.stringify(state.sections)),winter:state.winter,tight:state.tight,custom:state.custom,method:state.method};state.projects=[p];state.currentProjectId=p.id;}
+}catch(e){}}
 function section(name='Новый раздел'){return {id:uid(),name,items:[]};}
 function item(name='Новая позиция',unit='шт',price=0,quantity=1){return {id:uid(),name,unit,price:num(price),quantity:Math.max(.001,num(quantity)||1)};}
 
