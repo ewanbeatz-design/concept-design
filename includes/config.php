@@ -11,10 +11,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ---------- Подключение к БД ----------
-// Production: задайте CONCEPT_DB_HOST, CONCEPT_DB_NAME,
-// CONCEPT_DB_USER и CONCEPT_DB_PASSWORD в окружении сервера.
+// Production: секретный конфиг хранится вне публичной директории сайта.
 // Local XAMPP: при отсутствии переменных используется локальная БД.
 $pdo = null;
+
+$serverConfig = dirname(__DIR__, 2) . '/concept-design-config.php';
+if (is_file($serverConfig)) {
+    require_once $serverConfig;
+}
 
 $dbHost = getenv('CONCEPT_DB_HOST') ?: 'localhost';
 $dbName = getenv('CONCEPT_DB_NAME') ?: 'concept_design';
