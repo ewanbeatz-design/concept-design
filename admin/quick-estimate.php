@@ -1,5 +1,5 @@
 <?php
-$pageTitle='Быстрая смета';
+$pageTitle='Смета';
 require_once __DIR__.'/includes/header.php';
 if(!$pdo){echo '<div class="admin-card"><h2 class="admin-card-title">Нет подключения к БД</h2></div>';require_once __DIR__.'/includes/footer.php';exit;}
 $pdo->exec("CREATE TABLE IF NOT EXISTS quick_estimate_catalog(
@@ -58,7 +58,7 @@ $labels=['materials'=>'ЛДСП / МДФ / Кромка','countertop'=>'Стол
 function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
 ?>
 <div class="qe-page">
- <div class="qe-head"><div><div class="qe-eyebrow">CONCEPT / CALCULATOR</div><h2>Быстрая смета корпусной мебели</h2><p>Собирайте состав изделия из каталога и сразу считайте стоимость материалов и комплектующих.</p></div><button class="admin-btn" id="qeClear"><i class="bi bi-arrow-counterclockwise"></i> Очистить</button></div>
+ <div class="qe-head"><div><div class="qe-eyebrow">CONCEPT / ESTIMATE</div><h2>Смета</h2><p>Самостоятельный калькулятор: добавляйте позиции, указывайте количество и цену, задавайте наценку и сразу получайте итоговую стоимость.</p></div><button class="admin-btn" id="qeClear"><i class="bi bi-arrow-counterclockwise"></i> Очистить</button></div>
  <div class="qe-layout">
   <section class="qe-catalog">
    <div class="qe-toolbar"><div class="qe-search"><i class="bi bi-search"></i><input id="qeSearch" placeholder="Поиск материала, артикула, бренда..."></div>
