@@ -15,14 +15,14 @@ if (session_status() === PHP_SESSION_NONE) {
 // Local XAMPP: при отсутствии переменных используется локальная БД.
 $pdo = null;
 
-$serverConfig = dirname(__DIR__, 2) . '/concept-design-config.php';
+$serverConfig = __DIR__ . '/concept-design-config.php';
 if (is_file($serverConfig)) {
     require_once $serverConfig;
 }
 
 $dbHost = getenv('CONCEPT_DB_HOST') ?: 'localhost';
-$dbName = getenv('CONCEPT_DB_NAME') ?: 'concept_design';
-$dbUser = getenv('CONCEPT_DB_USER') ?: 'root';
+$dbName = getenv('CONCEPT_DB_NAME') ?: 'u1027561_concept-design';
+$dbUser = getenv('CONCEPT_DB_USER') ?: 'u1027561_concept-desing';
 $dbPass = getenv('CONCEPT_DB_PASSWORD') ?: '';
 
 try {
