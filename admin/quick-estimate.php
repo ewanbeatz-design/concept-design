@@ -372,7 +372,7 @@ function editProject(id){
  setTimeout(()=>document.getElementById('smProjectName').focus(),300);
 }
 function formatRuPhone(value){
- let digits=String(value||'').replace(/\\D/g,'');
+ let digits=String(value||'').replace(/\D/g,'');
  if(!digits)return '';
  if(digits[0]==='8')digits='7'+digits.slice(1);
  else if(digits[0]!=='7')digits='7'+digits;
