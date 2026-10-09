@@ -189,7 +189,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
     </div>
 </div>
 
-<div class="modal fade" id="smProjectModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow" id="smProjectModalEyebrow">НОВЫЙ ПРОЕКТ</div><h5 class="modal-title" id="smProjectModalTitle">Создать проект</h5><small>Добавьте заказчика и объект — данные сохранятся отдельно от остальных смет.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smProjectEditId"><div class="sm-form-grid"><label><span>Название проекта</span><input id="smProjectName" class="form-control" placeholder="Например, Кухня для Ивановых"></label><label><span>Заказчик</span><input id="smProjectClient" class="form-control" placeholder="Имя заказчика"></label><label><span>Телефон заказчика</span><input id="smProjectPhone" class="form-control" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"></label><label class="sm-form-wide"><span>Объект / адрес</span><input id="smProjectObject" class="form-control" placeholder="Квартира, дом, адрес"></label><label><span>Тип проекта</span><input id="smProjectType" class="form-control" value="Строительство" placeholder="Строительство"></label></div></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smProjectCreateConfirm"><i class="bi bi-plus-lg"></i> Создать проект</button></div></div></div></div>
+<div class="modal fade" id="smProjectModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow" id="smProjectModalEyebrow">НОВЫЙ ПРОЕКТ</div><h5 class="modal-title" id="smProjectModalTitle">Создать проект</h5><small>Добавьте заказчика и объект — данные сохранятся отдельно от остальных смет.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smProjectEditId"><div class="sm-form-grid"><label><span>Название проекта</span><input id="smProjectName" class="form-control" placeholder="Например, Кухня для Ивановых"></label><label><span>Заказчик</span><input id="smProjectClient" class="form-control" placeholder="Имя заказчика"></label><label><span>Телефон заказчика</span><input id="smProjectPhone" class="form-control" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"></label><label class="sm-form-wide"><span>Объект / адрес</span><input id="smProjectObject" class="form-control" placeholder="Квартира, дом, адрес"></label><label><span>Тип проекта</span><select id="smProjectType" class="form-select"><option value="Шкаф">Шкаф</option><option value="Кухня">Кухня</option><option value="Стол">Стол</option><option value="Пенал">Пенал</option><option value="Гардеробная">Гардеробная</option><option value="Тумба">Тумба</option><option value="Комод">Комод</option><option value="Прихожая">Прихожая</option><option value="Мебель для ванной">Мебель для ванной</option><option value="Другое">Другое</option></select></label></div></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smProjectCreateConfirm"><i class="bi bi-plus-lg"></i> Создать проект</button></div></div></div></div>
 
 <div class="modal fade" id="smConfirmModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content sm-modal sm-confirm-modal"><div class="modal-body"><div class="sm-confirm-icon"><i class="bi bi-question-lg"></i></div><h5 id="smConfirmTitle">Подтвердите действие</h5><p id="smConfirmText">Вы уверены?</p></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smConfirmOk">Продолжить</button></div></div></div></div>
 
@@ -308,7 +308,7 @@ function createProject(){
  document.getElementById('smProjectClient').value='';
  document.getElementById('smProjectPhone').value='';
  document.getElementById('smProjectObject').value='';
- document.getElementById('smProjectType').value='Строительство';
+ document.getElementById('smProjectType').value='Шкаф';
  document.getElementById('smProjectModalEyebrow').textContent='НОВЫЙ ПРОЕКТ';
  document.getElementById('smProjectModalTitle').textContent='Создать проект';
  document.getElementById('smProjectCreateConfirm').innerHTML='<i class="bi bi-plus-lg"></i> Создать проект';
@@ -320,20 +320,37 @@ function editProject(id){
  document.getElementById('smProjectEditId').value=p.id;
  document.getElementById('smProjectName').value=p.name||'';
  document.getElementById('smProjectClient').value=p.client||'';
- document.getElementById('smProjectPhone').value=p.phone||'';
+ document.getElementById('smProjectPhone').value=formatRuPhone(p.phone||'');
  document.getElementById('smProjectObject').value=p.objectName||'';
- document.getElementById('smProjectType').value=p.type||'Строительство';
+ const typeSelect=document.getElementById('smProjectType');const projectType=p.type||'Другое';
+ if(!Array.from(typeSelect.options).some(o=>o.value===projectType)){typeSelect.add(new Option(projectType,projectType));}
+ typeSelect.value=projectType;
  document.getElementById('smProjectModalEyebrow').textContent='РЕДАКТИРОВАНИЕ ПРОЕКТА';
  document.getElementById('smProjectModalTitle').textContent='Изменить проект';
  document.getElementById('smProjectCreateConfirm').innerHTML='<i class="bi bi-check2"></i> Сохранить изменения';
  bootstrap.Modal.getOrCreateInstance(document.getElementById('smProjectModal')).show();
  setTimeout(()=>document.getElementById('smProjectName').focus(),300);
 }
+function formatRuPhone(value){
+ let digits=String(value||'').replace(/\\D/g,'');
+ if(!digits)return '';
+ if(digits[0]==='8')digits='7'+digits.slice(1);
+ else if(digits[0]!=='7')digits='7'+digits;
+ digits=digits.slice(0,11);
+ const rest=digits.slice(1);
+ let out='+7';
+ if(rest.length)out+=' ('+rest.slice(0,3);
+ if(rest.length>=3)out+=')';
+ if(rest.length>3)out+=' '+rest.slice(3,6);
+ if(rest.length>6)out+='-'+rest.slice(6,8);
+ if(rest.length>8)out+='-'+rest.slice(8,10);
+ return out;
+}
 function confirmCreateProject(){
  const name=document.getElementById('smProjectName').value.trim();
  if(!name){document.getElementById('smProjectName').focus();return;}
  const client=document.getElementById('smProjectClient').value.trim();
- const phone=document.getElementById('smProjectPhone').value.trim();
+ const phone=formatRuPhone(document.getElementById('smProjectPhone').value.trim());
  const objectName=document.getElementById('smProjectObject').value.trim();
  const type=document.getElementById('smProjectType').value.trim()||'Строительство';
  const editId=document.getElementById('smProjectEditId').value;
@@ -503,6 +520,7 @@ document.getElementById('smEntrySave').onclick=saveManualEntry;
 document.getElementById('smNewEstimate').onclick=createProject;
 
 document.getElementById('smProjectCreateConfirm').onclick=confirmCreateProject;
+document.getElementById('smProjectPhone').addEventListener('input',e=>{const pos=e.target.selectionStart;e.target.value=formatRuPhone(e.target.value);try{e.target.setSelectionRange(e.target.value.length,e.target.value.length);}catch(err){}});
 document.getElementById('smStageSave').onclick=()=>{const id=document.getElementById('smStageProjectId').value;const p=state.projects.find(x=>x.id===id);if(!p)return;p.stagesDone=Math.min(Number(p.stagesTotal)||9,Math.max(0,Math.round(num(document.getElementById('smStageValue').value))));save();bootstrap.Modal.getInstance(document.getElementById('smStageModal'))?.hide();renderProjects();};
 document.getElementById('smCreateProject').onclick=createProject;
 document.getElementById('smBackProjects').onclick=openProjects;
