@@ -82,7 +82,7 @@ if (!(int)$pdo->query("SELECT COUNT(*) FROM quick_estimate_catalog")->fetchColum
     foreach($seed as $x)$s->execute($x);
 }
 $cat=$pdo->query("SELECT * FROM quick_estimate_catalog WHERE active=1 ORDER BY FIELD(category,'materials','countertop','hardware','fasteners'),name")->fetchAll();
-$labels=['materials'=>'ЛДСП / МДФ / Кромка','countertop'=>'Столешницы','hardware'=>'Фурнитура','fasteners'=>'Крепёж и расходники'];
+$labels=['materials'=>'ЛДСП / МДФ / Кромка','countertop'=>'Столешницы','hardware'=>'Фурнитура','fasteners'=>'Крепёж и расходники','electro'=>'Электрика'];
 function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
 ?>
 
@@ -212,7 +212,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
     <?php foreach($cat as $x): ?>
       <button type="button" class="sm-catalog-item" data-id="<?=$x['id']?>" data-name="<?=h(mb_strtolower($x['name'].' '.$x['brand'].' '.$x['article']))?>" data-title="<?=h($x['name'])?>" data-brand="<?=h($x['brand'])?>" data-unit="<?=h($x['unit'])?>" data-price="<?=$x['price']?>">
        <span class="sm-cat-icon"><i class="bi bi-tools"></i></span>
-       <span class="sm-cat-info"><strong><?=h($x['name'])?></strong><small><?=h($labels[$x['category']])?> · <?=h($x['brand'])?> · <?=h($x['article'])?></small></span>
+       <span class="sm-cat-info"><strong><?=h($x['name'])?></strong><small><?=h($labels[$x['category']] ?? $x['category'])?> · <?=h($x['brand'])?> · <?=h($x['article'])?></small></span>
        <strong><?=qem($x['price'])?> / <?=h($x['unit'])?></strong>
        <span class="sm-cat-check"><i class="bi bi-check-lg"></i></span>
       </button>
