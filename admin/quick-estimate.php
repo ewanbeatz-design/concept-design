@@ -164,7 +164,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
         </div>
         <div class="sm-toolbar-actions">
             <button type="button" id="smAddSection"><i class="bi bi-plus-lg"></i> Добавить раздел</button>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#smCatalogModal"><i class="bi bi-book"></i> Каталог</button>
+            <button type="button" id="smCatalogToolbar"><i class="bi bi-book"></i> Каталог</button>
         </div>
     </div>
 
@@ -414,8 +414,10 @@ function saveManualEntry(){
  bootstrap.Modal.getInstance(document.getElementById('smEntryModal'))?.hide();render();
 }
 let selected={sid:null,data:null};
-function openCatalog(sid){selected.sid=sid;selected.data=null;document.getElementById('smSelected').hidden=true;document.getElementById('smCatalogAdd').disabled=true;document.getElementById('smCatalogSearch').value='';filterCatalog();bootstrap.Modal.getOrCreateInstance(document.getElementById('smCatalogModal')).show();setTimeout(()=>document.getElementById('smCatalogSearch').focus(),300);}
-function filterCatalog(){const q=document.getElementById('smCatalogSearch').value.toLowerCase();document.querySelectorAll('.sm-catalog-item').forEach(x=>x.hidden=!!q&&!x.dataset.name.includes(q));}
+ let lastSectionId=null;
+function openCatalog(sid){selected.sid=sid;lastSectionId=sid;selected.data=null;document.getElementById('smSelected').hidden=true;document.getElementById('smCatalogAdd').disabled=true;document.getElementById('smCatalogSearch').value='';filterCatalog();bootstrap.Modal.getOrCreateInstance(document.getElementById('smCatalogModal')).show();setTimeout(()=>document.getElementById('smCatalogSearch').focus(),300);}
+function openToolbarCatalog(){let sid=lastSectionId&&state.sections.some(s=>s.id===lastSectionId)?lastSectionId:(state.sections[0]?.id||null);if(!sid){const s=section();state.sections.push(s);render();sid=s.id;}openCatalog(sid);}
+ function filterCatalog(){const q=document.getElementById('smCatalogSearch').value.toLowerCase();document.querySelectorAll('.sm-catalog-item').forEach(x=>x.hidden=!!q&&!x.dataset.name.includes(q));}
 function addSelected(){if(!selected.sid||!selected.data)return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;const q=num(document.getElementById('smSelectedQty').value)||1;s.items.push(item(selected.data.title,selected.data.unit,selected.data.price,q));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();}
 function applyTemplate(type){const data=templates[type];if(!data)return;data.forEach(([name,rows])=>{const s=section(name);rows.forEach(([n,u,p])=>s.items.push(item(n,u,p,1)));state.sections.push(s)});bootstrap.Modal.getInstance(document.getElementById('smTemplateModal'))?.hide();render();}
 function showConfirm(title,text,ok,action){document.getElementById('smConfirmTitle').textContent=title;document.getElementById('smConfirmText').textContent=text;const b=document.getElementById('smConfirmOk');b.textContent=ok;b.onclick=()=>{bootstrap.Modal.getInstance(document.getElementById('smConfirmModal'))?.hide();action();};bootstrap.Modal.getOrCreateInstance(document.getElementById('smConfirmModal')).show();}
@@ -440,6 +442,7 @@ document.getElementById('smCreateProject').onclick=createProject;
 document.getElementById('smBackProjects').onclick=openProjects;
 document.getElementById('smProjectSearch').oninput=renderProjects;
 document.getElementById('smAddSection').onclick=addSection;
+ document.getElementById('smCatalogToolbar').onclick=openToolbarCatalog;
 document.getElementById('smEmptyAdd')?.addEventListener('click',addSection);
 document.getElementById('smClear').onclick=()=>showConfirm('Очистить смету?','Все разделы и позиции текущего проекта будут удалены.','Очистить',()=>{state.sections=[];state.winter=false;state.tight=false;state.custom=1;render();document.getElementById('smWinter').checked=false;document.getElementById('smTight').checked=false;document.getElementById('smCustom').value=1;});
 document.getElementById('smPrint').onclick=exportPrint;
@@ -450,7 +453,7 @@ document.getElementById('smCustom').oninput=e=>{state.custom=Math.max(.1,num(e.t
 document.getElementById('smMethod').onchange=e=>{state.method=e.target.value;render()};
 document.getElementById('smCatalogSearch').oninput=filterCatalog;
 document.getElementById('smCatalogGrid').onclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;document.querySelectorAll('.sm-catalog-item.selected').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selected.data=b.dataset;document.getElementById('smSelectedName').textContent=b.dataset.title;document.getElementById('smSelected').hidden=false;document.getElementById('smCatalogAdd').disabled=false;};
-document.getElementById('smCatalogGrid').ondblclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b||!selected.sid)return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;s.items.push(item(b.dataset.title,b.dataset.unit,b.dataset.price,1));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();};
+document.getElementById('smCatalogGrid').ondblclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;if(!selected.sid||!state.sections.some(x=>x.id===selected.sid))return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;selected.data=b.dataset;s.items.push(item(b.dataset.title,b.dataset.unit,b.dataset.price,1));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();};
 document.getElementById('smCatalogAdd').onclick=addSelected;
 document.getElementById('smTemplates').onclick=e=>{const b=e.target.closest('[data-template]');if(b)applyTemplate(b.dataset.template)};
 document.addEventListener('click',e=>{if(e.target.closest('#smEmptyAdd'))addSection();if(e.target.closest('#smEmptyProject'))createProject();});
