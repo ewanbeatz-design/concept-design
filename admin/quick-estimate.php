@@ -203,14 +203,14 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
  <div class="modal-dialog modal-dialog-centered modal-xl">
   <div class="modal-content sm-modal">
    <div class="modal-header">
-    <div><div class="sm-eyebrow">КАТАЛОГ</div><h5 class="modal-title">Добавить работу или материал</h5><small>Выберите позицию и добавьте её в нужный раздел.</small></div>
+    <div><div class="sm-eyebrow" id="smCatalogEyebrow">КАТАЛОГ</div><h5 class="modal-title" id="smCatalogTitle">Добавить работу или материал</h5><small id="smCatalogSubtitle">Выберите позицию и добавьте её в нужный раздел.</small></div>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
    </div>
    <div class="modal-body">
-    <div class="sm-catalog-search"><i class="bi bi-search"></i><input id="smCatalogSearch" placeholder="Поиск материала, артикула, бренда..."></div><div class="sm-catalog-hint"><i class="bi bi-mouse2"></i> Двойной клик по позиции — сразу добавить в смету</div>
+    <div class="sm-catalog-search"><i class="bi bi-search"></i><input id="smCatalogSearch" placeholder="Поиск материала, артикула, бренда..."></div><div class="sm-catalog-hint" id="smCatalogHint"><i class="bi bi-mouse2"></i> Двойной клик по позиции — сразу добавить в смету</div>
     <div class="sm-catalog-grid" id="smCatalogGrid">
     <?php foreach($cat as $x): ?>
-      <button type="button" class="sm-catalog-item" data-id="<?=$x['id']?>" data-name="<?=h(mb_strtolower($x['name'].' '.$x['brand'].' '.$x['article']))?>" data-title="<?=h($x['name'])?>" data-brand="<?=h($x['brand'])?>" data-unit="<?=h($x['unit'])?>" data-price="<?=$x['price']?>">
+      <button type="button" class="sm-catalog-item" data-id="<?=$x['id']?>" data-category="<?=h($labels[$x['category']] ?? $x['category'])?>" data-name="<?=h(mb_strtolower($x['name'].' '.$x['brand'].' '.$x['article']))?>" data-title="<?=h($x['name'])?>" data-brand="<?=h($x['brand'])?>" data-unit="<?=h($x['unit'])?>" data-price="<?=$x['price']?>">
        <span class="sm-cat-icon"><i class="bi bi-tools"></i></span>
        <span class="sm-cat-info"><strong><?=h($x['name'])?></strong><small><?=h($labels[$x['category']] ?? $x['category'])?> · <?=h($x['brand'])?> · <?=h($x['article'])?></small></span>
        <strong><?=qem($x['price'])?> / <?=h($x['unit'])?></strong>
@@ -493,7 +493,7 @@ let selected={sid:null,data:null};
 function openCatalog(sid){selected.sid=sid;lastSectionId=sid;selected.data=null;document.getElementById('smSelected').hidden=true;document.getElementById('smCatalogAdd').disabled=true;document.getElementById('smCatalogSearch').value='';filterCatalog();bootstrap.Modal.getOrCreateInstance(document.getElementById('smCatalogModal')).show();setTimeout(()=>document.getElementById('smCatalogSearch').focus(),300);}
 function openToolbarCatalog(){let sid=lastSectionId&&state.sections.some(s=>s.id===lastSectionId)?lastSectionId:(state.sections[0]?.id||null);if(!sid){const s=section();state.sections.push(s);render();sid=s.id;}openCatalog(sid);}
  function filterCatalog(){const q=document.getElementById('smCatalogSearch').value.toLowerCase();document.querySelectorAll('.sm-catalog-item').forEach(x=>x.hidden=!!q&&!x.dataset.name.includes(q));}
-function addSelected(){if(!selected.sid||!selected.data)return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;const q=num(document.getElementById('smSelectedQty').value)||1;s.items.push(item(selected.data.title,selected.data.unit,selected.data.price,q));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();}
+function addSelected(){if(templateBuilderMode){finishCustomTemplateBuilder();return;}if(!selected.sid||!selected.data)return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;const q=num(document.getElementById('smSelectedQty').value)||1;s.items.push(item(selected.data.title,selected.data.unit,selected.data.price,q));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();}
 function renderCustomTemplates(){
  const grid=document.getElementById('smCustomTemplates'),empty=document.getElementById('smCustomTemplatesEmpty');if(!grid||!empty)return;
  grid.innerHTML=customTemplates.map(t=>{
@@ -504,14 +504,69 @@ function renderCustomTemplates(){
  empty.hidden=customTemplates.length>0;
 }
 function saveCustomTemplates(){localStorage.setItem(CUSTOM_TEMPLATES_KEY,JSON.stringify(customTemplates));renderCustomTemplates();}
-function openSaveTemplate(){const hasItems=state.sections.some(s=>(s.items||[]).length);document.getElementById('smTemplateName').value='';document.getElementById('smTemplateSaveError').hidden=hasItems;document.getElementById('smSaveTemplateConfirm').disabled=!hasItems;const open=()=>{bootstrap.Modal.getOrCreateInstance(document.getElementById('smSaveTemplateModal')).show();setTimeout(()=>document.getElementById('smTemplateName').focus(),250);};const templatesModal=bootstrap.Modal.getInstance(document.getElementById('smTemplateModal'));if(templatesModal){templatesModal.hide();setTimeout(open,250);}else open();}
+let templateBuilderMode=false,templateBuilderDraft=null;
+const templateBuilderSelection=new Map();
+function openSaveTemplate(){
+ document.getElementById('smTemplateName').value='';
+ document.getElementById('smTemplateSaveError').hidden=true;
+ document.getElementById('smSaveTemplateConfirm').disabled=false;
+ const open=()=>{bootstrap.Modal.getOrCreateInstance(document.getElementById('smSaveTemplateModal')).show();setTimeout(()=>document.getElementById('smTemplateName').focus(),250);};
+ const templatesModal=bootstrap.Modal.getInstance(document.getElementById('smTemplateModal'));
+ if(templatesModal){templatesModal.hide();setTimeout(open,250);}else open();
+}
 function saveCustomTemplate(){
  const name=document.getElementById('smTemplateName').value.trim();
- if(!state.sections.some(s=>(s.items||[]).length)){document.getElementById('smTemplateSaveError').hidden=false;return;}
  if(!name){document.getElementById('smTemplateName').focus();return;}
- const copy=state.sections.filter(s=>(s.items||[]).length).map(s=>({name:s.name,items:s.items.map(i=>({name:i.name,unit:i.unit,price:num(i.price),quantity:num(i.quantity)||1}))}));
- customTemplates.unshift({id:uid(),name,sections:copy,createdAt:new Date().toISOString()});
- saveCustomTemplates();bootstrap.Modal.getInstance(document.getElementById('smSaveTemplateModal'))?.hide();setTimeout(()=>bootstrap.Modal.getOrCreateInstance(document.getElementById('smTemplateModal')).show(),250);
+ templateBuilderDraft={name};
+ templateBuilderSelection.clear();
+ document.getElementById('smTemplateSaveError').hidden=true;
+ bootstrap.Modal.getInstance(document.getElementById('smSaveTemplateModal'))?.hide();
+ setTimeout(openTemplateBuilderCatalog,250);
+}
+function openTemplateBuilderCatalog(){
+ templateBuilderMode=true;selected.sid=null;selected.data=null;
+ document.querySelectorAll('.sm-catalog-item.selected').forEach(x=>x.classList.remove('selected'));
+ document.getElementById('smCatalogSearch').value='';
+ document.getElementById('smSelected').hidden=true;
+ document.getElementById('smCatalogEyebrow').textContent='СОЗДАНИЕ ШАБЛОНА';
+ document.getElementById('smCatalogTitle').textContent='Выберите позиции для шаблона';
+ document.getElementById('smCatalogSubtitle').textContent='Шаблон: «'+templateBuilderDraft.name+'». Отметьте нужные материалы и фурнитуру.';
+ document.getElementById('smCatalogHint').innerHTML='<i class="bi bi-check2-square"></i> Можно выбрать несколько позиций. Нажмите «Готово», когда закончите.';
+ document.getElementById('smCatalogAdd').disabled=true;
+ document.getElementById('smCatalogAdd').innerHTML='<i class="bi bi-check2-circle"></i> Готово · сохранить шаблон';
+ filterCatalog();
+ bootstrap.Modal.getOrCreateInstance(document.getElementById('smCatalogModal')).show();
+}
+function finishCustomTemplateBuilder(){
+ if(!templateBuilderDraft||!templateBuilderSelection.size)return;
+ const groups=new Map();
+ templateBuilderSelection.forEach(i=>{
+  const category=i.category||'Материалы и фурнитура';
+  if(!groups.has(category))groups.set(category,[]);
+  groups.get(category).push({name:i.name,unit:i.unit,price:num(i.price),quantity:1});
+ });
+ const sections=Array.from(groups,([name,items])=>({name,items}));
+ customTemplates.unshift({id:uid(),name:templateBuilderDraft.name,sections,createdAt:new Date().toISOString()});
+ saveCustomTemplates();
+ templateBuilderDraft=null;templateBuilderSelection.clear();templateBuilderMode=false;selected.sid=null;selected.data=null;
+ bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();
+ document.getElementById('smCatalogEyebrow').textContent='КАТАЛОГ';
+ document.getElementById('smCatalogTitle').textContent='Добавить работу или материал';
+ document.getElementById('smCatalogSubtitle').textContent='Выберите позицию и добавьте её в нужный раздел.';
+ document.getElementById('smCatalogHint').innerHTML='<i class="bi bi-mouse2"></i> Двойной клик по позиции — сразу добавить в смету';
+ document.getElementById('smCatalogAdd').innerHTML='<i class="bi bi-plus-lg"></i> Добавить в смету';
+ setTimeout(()=>bootstrap.Modal.getOrCreateInstance(document.getElementById('smTemplateModal')).show(),250);
+}
+function toggleTemplateBuilderItem(button){
+ const id=String(button.dataset.id||'');
+ if(!id)return;
+ if(templateBuilderSelection.has(id)){templateBuilderSelection.delete(id);button.classList.remove('selected');}
+ else{
+  templateBuilderSelection.set(id,{id,name:button.dataset.title,unit:button.dataset.unit,price:num(button.dataset.price),category:button.dataset.category});
+  button.classList.add('selected');
+ }
+ document.getElementById('smCatalogAdd').disabled=templateBuilderSelection.size===0;
+ document.getElementById('smCatalogAdd').innerHTML='<i class="bi bi-check2-circle"></i> Готово · сохранить шаблон ('+templateBuilderSelection.size+')';
 }
 function applyCustomTemplate(id){
  const t=customTemplates.find(x=>x.id===id);if(!t)return;
@@ -582,8 +637,8 @@ document.getElementById('smTight').onchange=e=>{state.tight=e.target.checked;ren
 document.getElementById('smCustom').oninput=e=>{state.custom=Math.max(.1,num(e.target.value)||1);render()};
 document.getElementById('smMethod').onchange=e=>{state.method=e.target.value;render()};
 document.getElementById('smCatalogSearch').oninput=filterCatalog;
-document.getElementById('smCatalogGrid').onclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;document.querySelectorAll('.sm-catalog-item.selected').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selected.data=b.dataset;document.getElementById('smSelectedName').textContent=b.dataset.title;document.getElementById('smSelected').hidden=false;document.getElementById('smCatalogAdd').disabled=false;};
-document.getElementById('smCatalogGrid').ondblclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;if(!selected.sid||!state.sections.some(x=>x.id===selected.sid))return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;selected.data=b.dataset;s.items.push(item(b.dataset.title,b.dataset.unit,b.dataset.price,1));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();};
+document.getElementById('smCatalogGrid').onclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;if(templateBuilderMode){toggleTemplateBuilderItem(b);return;}document.querySelectorAll('.sm-catalog-item.selected').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selected.data=b.dataset;document.getElementById('smSelectedName').textContent=b.dataset.title;document.getElementById('smSelected').hidden=false;document.getElementById('smCatalogAdd').disabled=false;};
+document.getElementById('smCatalogGrid').ondblclick=e=>{const b=e.target.closest('.sm-catalog-item');if(!b)return;if(templateBuilderMode){if(!templateBuilderSelection.has(String(b.dataset.id||'')))toggleTemplateBuilderItem(b);return;}if(!selected.sid||!state.sections.some(x=>x.id===selected.sid))return;const s=state.sections.find(x=>x.id===selected.sid);if(!s)return;selected.data=b.dataset;s.items.push(item(b.dataset.title,b.dataset.unit,b.dataset.price,1));bootstrap.Modal.getInstance(document.getElementById('smCatalogModal'))?.hide();render();};
 document.getElementById('smCatalogAdd').onclick=addSelected;
 document.getElementById('smTemplates').onclick=e=>{const b=e.target.closest('[data-template]');if(b)applyTemplate(b.dataset.template)};
 document.getElementById('smSaveTemplateOpen').onclick=openSaveTemplate;
