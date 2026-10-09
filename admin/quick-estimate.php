@@ -189,7 +189,7 @@ function qem($n){return number_format((float)$n,2,',',' ').' ₽';}
     </div>
 </div>
 
-<div class="modal fade" id="smProjectModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow" id="smProjectModalEyebrow">НОВЫЙ ПРОЕКТ</div><h5 class="modal-title" id="smProjectModalTitle">Создать проект</h5><small>Добавьте заказчика и объект — данные сохранятся отдельно от остальных смет.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smProjectEditId"><div class="sm-form-grid"><label><span>Название проекта</span><input id="smProjectName" class="form-control" placeholder="Например, Кухня для Ивановых"></label><label><span>Заказчик</span><input id="smProjectClient" class="form-control" placeholder="Имя заказчика"></label><label class="sm-form-wide"><span>Объект / адрес</span><input id="smProjectObject" class="form-control" placeholder="Квартира, дом, адрес"></label><label><span>Тип проекта</span><input id="smProjectType" class="form-control" value="Строительство" placeholder="Строительство"></label></div></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smProjectCreateConfirm"><i class="bi bi-plus-lg"></i> Создать проект</button></div></div></div></div>
+<div class="modal fade" id="smProjectModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content sm-modal"><div class="modal-header"><div><div class="sm-eyebrow" id="smProjectModalEyebrow">НОВЫЙ ПРОЕКТ</div><h5 class="modal-title" id="smProjectModalTitle">Создать проект</h5><small>Добавьте заказчика и объект — данные сохранятся отдельно от остальных смет.</small></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="smProjectEditId"><div class="sm-form-grid"><label><span>Название проекта</span><input id="smProjectName" class="form-control" placeholder="Например, Кухня для Ивановых"></label><label><span>Заказчик</span><input id="smProjectClient" class="form-control" placeholder="Имя заказчика"></label><label><span>Телефон заказчика</span><input id="smProjectPhone" class="form-control" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"></label><label class="sm-form-wide"><span>Объект / адрес</span><input id="smProjectObject" class="form-control" placeholder="Квартира, дом, адрес"></label><label><span>Тип проекта</span><input id="smProjectType" class="form-control" value="Строительство" placeholder="Строительство"></label></div></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smProjectCreateConfirm"><i class="bi bi-plus-lg"></i> Создать проект</button></div></div></div></div>
 
 <div class="modal fade" id="smConfirmModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content sm-modal sm-confirm-modal"><div class="modal-body"><div class="sm-confirm-icon"><i class="bi bi-question-lg"></i></div><h5 id="smConfirmTitle">Подтвердите действие</h5><p id="smConfirmText">Вы уверены?</p></div><div class="modal-footer"><button class="sm-outline" type="button" data-bs-dismiss="modal">Отмена</button><button class="sm-primary" type="button" id="smConfirmOk">Продолжить</button></div></div></div></div>
 
@@ -293,7 +293,7 @@ function renderProjects(){
    const stagePct=Math.round(stagesDone/stagesTotal*100), estimatePct=items?100:0;
    const client=(p.client||'').trim(), avatar=esc((client||p.name||'П').charAt(0).toUpperCase());
    const card=document.createElement('article');card.className='project-card sm-est-project-card';card.dataset.projectId=p.id;
-   card.innerHTML='<div class="card-top"><span class="status status-active"><i></i>В работе</span><span class="text-muted small">'+esc(p.type||'Строительство')+'</span></div><div class="project-info"><h3>'+esc(p.name)+'</h3><span>'+esc(p.objectName||'Объект не указан')+'</span><div class="client-line mt-3"><span class="mini-avatar">'+avatar+'</span>'+esc(client||'Заказчик не указан')+'</div></div><div class="project-stage"><div class="project-stage-head"><span><i class="fa-solid fa-bars-progress"></i> Этапы</span><strong>'+stagesDone+' / '+stagesTotal+'</strong></div><div class="project-stage-title">'+esc((p.sections&&p.sections[0]?.name)||'Общестроительные работы')+'</div><div class="project-stage-track"><span style="width:'+stagePct+'%"></span></div></div><div class="progress-meta"><span>Заполнено сметы</span><strong>'+estimatePct+'%</strong></div><div class="progress-track"><span style="width:'+estimatePct+'%"></span></div><div class="card-footer"><span><i class="fa-solid fa-calendar-days"></i> '+esc(p.date||'')+'</span><strong>'+money(totalP)+'</strong></div><div class="project-card-actions"><button type="button" class="project-open-link" data-open-estimate="'+esc(p.id)+'"><span>Открыть проект</span><i class="fa-solid fa-arrow-up-right-from-square"></i></button><button type="button" class="stage-manage-button" data-stage-manage="'+esc(p.id)+'"><i class="fa-solid fa-bars-progress"></i><span>Этапы</span></button></div><div class="sm-project-manage-actions"><button type="button" data-project-edit="'+esc(p.id)+'"><i class="bi bi-pencil-square"></i> Редактировать</button><button type="button" data-project-delete="'+esc(p.id)+'"><i class="bi bi-trash3"></i> Удалить</button></div>';
+   card.innerHTML='<div class="card-top"><span class="status status-active"><i></i>В работе</span><span class="text-muted small">'+esc(p.type||'Строительство')+'</span></div><div class="project-info"><h3>'+esc(p.name)+'</h3><span>'+esc(p.objectName||'Объект не указан')+'</span><div class="client-line mt-3"><span class="mini-avatar">'+avatar+'</span>'+esc(client||'Заказчик не указан')+'</div>'+(p.phone?'<div class="client-line sm-client-phone"><i class="bi bi-telephone me-2"></i>'+esc(p.phone)+'</div>':'')+'</div><div class="project-stage"><div class="project-stage-head"><span><i class="fa-solid fa-bars-progress"></i> Этапы</span><strong>'+stagesDone+' / '+stagesTotal+'</strong></div><div class="project-stage-title">'+esc((p.sections&&p.sections[0]?.name)||'Общестроительные работы')+'</div><div class="project-stage-track"><span style="width:'+stagePct+'%"></span></div></div><div class="progress-meta"><span>Заполнено сметы</span><strong>'+estimatePct+'%</strong></div><div class="progress-track"><span style="width:'+estimatePct+'%"></span></div><div class="card-footer"><span><i class="fa-solid fa-calendar-days"></i> '+esc(p.date||'')+'</span><strong>'+money(totalP)+'</strong></div><div class="project-card-actions"><button type="button" class="project-open-link" data-open-estimate="'+esc(p.id)+'"><span>Открыть проект</span><i class="fa-solid fa-arrow-up-right-from-square"></i></button><button type="button" class="stage-manage-button" data-stage-manage="'+esc(p.id)+'"><i class="fa-solid fa-bars-progress"></i><span>Этапы</span></button></div><div class="sm-project-manage-actions"><button type="button" data-project-edit="'+esc(p.id)+'"><i class="bi bi-pencil-square"></i> Редактировать</button><button type="button" data-project-delete="'+esc(p.id)+'"><i class="bi bi-trash3"></i> Удалить</button></div>';
    card.querySelector('[data-open-estimate]').onclick=e=>{e.stopPropagation();openProject(p.id);};
    card.querySelector('[data-stage-manage]').onclick=e=>{e.stopPropagation();document.getElementById('smStageValue').value=stagesDone;document.getElementById('smStageProjectId').value=p.id;bootstrap.Modal.getOrCreateInstance(document.getElementById('smStageModal')).show();};
    card.querySelector('[data-project-edit]').onclick=e=>{e.stopPropagation();editProject(p.id);};
@@ -306,6 +306,7 @@ function createProject(){
  document.getElementById('smProjectEditId').value='';
  document.getElementById('smProjectName').value='';
  document.getElementById('smProjectClient').value='';
+ document.getElementById('smProjectPhone').value='';
  document.getElementById('smProjectObject').value='';
  document.getElementById('smProjectType').value='Строительство';
  document.getElementById('smProjectModalEyebrow').textContent='НОВЫЙ ПРОЕКТ';
@@ -319,6 +320,7 @@ function editProject(id){
  document.getElementById('smProjectEditId').value=p.id;
  document.getElementById('smProjectName').value=p.name||'';
  document.getElementById('smProjectClient').value=p.client||'';
+ document.getElementById('smProjectPhone').value=p.phone||'';
  document.getElementById('smProjectObject').value=p.objectName||'';
  document.getElementById('smProjectType').value=p.type||'Строительство';
  document.getElementById('smProjectModalEyebrow').textContent='РЕДАКТИРОВАНИЕ ПРОЕКТА';
@@ -331,16 +333,17 @@ function confirmCreateProject(){
  const name=document.getElementById('smProjectName').value.trim();
  if(!name){document.getElementById('smProjectName').focus();return;}
  const client=document.getElementById('smProjectClient').value.trim();
+ const phone=document.getElementById('smProjectPhone').value.trim();
  const objectName=document.getElementById('smProjectObject').value.trim();
  const type=document.getElementById('smProjectType').value.trim()||'Строительство';
  const editId=document.getElementById('smProjectEditId').value;
  if(editId){
    const p=state.projects.find(x=>x.id===editId);if(!p)return;
-   Object.assign(p,{name,client,objectName,type,date:new Date().toLocaleDateString('ru-RU')});
+   Object.assign(p,{name,client,phone,objectName,type,date:new Date().toLocaleDateString('ru-RU')});
    save();bootstrap.Modal.getInstance(document.getElementById('smProjectModal'))?.hide();renderProjects();return;
  }
  state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';
- const p={id:uid(),name,client,objectName,type,date:new Date().toLocaleDateString('ru-RU'),sections:[],winter:false,tight:false,custom:1,method:'resource',stagesTotal:9,stagesDone:0};
+ const p={id:uid(),name,client,phone,objectName,type,date:new Date().toLocaleDateString('ru-RU'),sections:[],winter:false,tight:false,custom:1,method:'resource',stagesTotal:9,stagesDone:0};
  state.projects.unshift(p);state.currentProjectId=p.id;save();
  bootstrap.Modal.getInstance(document.getElementById('smProjectModal'))?.hide();
  openEstimate();
