@@ -423,6 +423,7 @@ function applyTemplate(type){const data=templates[type];if(!data)return;data.for
 function showConfirm(title,text,ok,action){document.getElementById('smConfirmTitle').textContent=title;document.getElementById('smConfirmText').textContent=text;const b=document.getElementById('smConfirmOk');b.textContent=ok;b.onclick=()=>{bootstrap.Modal.getInstance(document.getElementById('smConfirmModal'))?.hide();action();};bootstrap.Modal.getOrCreateInstance(document.getElementById('smConfirmModal')).show();}
 function exportPrint(){window.print();}
 function loadSaved(){load();document.getElementById('smWinter').checked=state.winter;document.getElementById('smTight').checked=state.tight;document.getElementById('smCustom').value=state.custom;document.getElementById('smMethod').value=state.method;render();}
+document.addEventListener('dblclick',e=>{const row=e.target.closest('.sm-row');if(!row||e.target.closest('.sm-actions'))return;const sid=row.closest('.sm-group')?.dataset.sid;if(!sid||!row.dataset.iid)return;openManualEntry(sid,row.dataset.iid);});
 document.addEventListener('click',e=>{
  const t=e.target.closest('[data-action]');if(!t)return;
  const g=t.closest('.sm-group'),sid=t.dataset.sid||g?.dataset.sid,action=t.dataset.action;
