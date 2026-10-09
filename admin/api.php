@@ -33,6 +33,100 @@ $action = $_POST['action'] ?? $_GET['action'] ?? '';
 switch ($action) {
 
     /* ============================================================
+       СМЕТЫ — облачная синхронизация проектов между устройствами
+       ============================================================ */
+    case 'estimate.sync': {
+        $adminId = (int)(admin_user()['id'] ?? 0);
+        if (!$adminId) json_err('unauthorized', 401);
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS concept_estimate_projects (
+            admin_id BIGINT UNSIGNED NOT NULL,
+            project_id VARCHAR(80) NOT NULL,
+            payload LONGTEXT NOT NULL,
+            is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (admin_id, project_id),
+            KEY admin_deleted_updated (admin_id, is_deleted, updated_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        $incoming = json_decode((string)($_POST['projects'] ?? '[]'), true);
+        if (!is_array($incoming)) json_err('Некорректные данные смет');
+
+        // Первичная миграция: добавляем локальные проекты, которых ещё нет на сервере.
+        // Уже синхронизированные записи и удалённые проекты не перезаписываются.
+        $insert = $pdo->prepare("INSERT IGNORE INTO concept_estimate_projects (admin_id, project_id, payload, is_deleted) VALUES (?, ?, ?, 0)");
+        foreach ($incoming as $project) {
+            if (!is_array($project) || !isset($project['id'])) continue;
+            $projectId = substr(trim((string)$project['id']), 0, 80);
+            if ($projectId === '') continue;
+            $payload = json_encode($project, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            if ($payload === false) continue;
+            $insert->execute([$adminId, $projectId, $payload]);
+        }
+
+        $stmt = $pdo->prepare("SELECT payload FROM concept_estimate_projects WHERE admin_id = ? AND is_deleted = 0 ORDER BY updated_at DESC");
+        $stmt->execute([$adminId]);
+        $projects = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $payload) {
+            $project = json_decode((string)$payload, true);
+            if (is_array($project) && isset($project['id'])) $projects[] = $project;
+        }
+        json_ok(['projects' => $projects]);
+    }
+
+    case 'estimate.save': {
+        $adminId = (int)(admin_user()['id'] ?? 0);
+        if (!$adminId) json_err('unauthorized', 401);
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS concept_estimate_projects (
+            admin_id BIGINT UNSIGNED NOT NULL,
+            project_id VARCHAR(80) NOT NULL,
+            payload LONGTEXT NOT NULL,
+            is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (admin_id, project_id),
+            KEY admin_deleted_updated (admin_id, is_deleted, updated_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        $project = json_decode((string)($_POST['project'] ?? ''), true);
+        if (!is_array($project) || !isset($project['id'])) json_err('Некорректная смета');
+        $projectId = substr(trim((string)$project['id']), 0, 80);
+        if ($projectId === '') json_err('Некорректный идентификатор сметы');
+        $payload = json_encode($project, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ($payload === false) json_err('Не удалось сериализовать смету');
+
+        // Tombstone protection: a stale browser cannot silently resurrect a deleted project.
+        $stmt = $pdo->prepare("INSERT INTO concept_estimate_projects (admin_id, project_id, payload, is_deleted)
+            VALUES (?, ?, ?, 0)
+            ON DUPLICATE KEY UPDATE
+                payload = IF(is_deleted = 0, VALUES(payload), payload),
+                updated_at = IF(is_deleted = 0, CURRENT_TIMESTAMP, updated_at)");
+        $stmt->execute([$adminId, $projectId, $payload]);
+        json_ok(['project_id' => $projectId]);
+    }
+
+    case 'estimate.delete': {
+        $adminId = (int)(admin_user()['id'] ?? 0);
+        if (!$adminId) json_err('unauthorized', 401);
+        $projectId = substr(trim((string)($_POST['project_id'] ?? '')), 0, 80);
+        if ($projectId === '') json_err('Некорректный идентификатор сметы');
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS concept_estimate_projects (
+            admin_id BIGINT UNSIGNED NOT NULL,
+            project_id VARCHAR(80) NOT NULL,
+            payload LONGTEXT NOT NULL,
+            is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (admin_id, project_id),
+            KEY admin_deleted_updated (admin_id, is_deleted, updated_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        $stmt = $pdo->prepare("UPDATE concept_estimate_projects SET is_deleted = 1 WHERE admin_id = ? AND project_id = ?");
+        $stmt->execute([$adminId, $projectId]);
+        json_ok(['project_id' => $projectId]);
+    }
+
+    /* ============================================================
        ЗАЯВКИ
        ============================================================ */
 
