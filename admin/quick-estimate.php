@@ -300,6 +300,46 @@ const CUSTOM_TEMPLATES_KEY='concept_estimate_custom_templates_v1';
 const DOCS_KEY='concept_estimate_documents_v1';
 let currentDocumentType='contract';
 const state={sections:[],winter:false,tight:false,custom:1,method:'resource',projects:[],currentProjectId:null};
+let cloudSyncReady=false;
+const cloudSaveTimers=new Map();
+async function cloudRequest(action, values={}){
+ const fd=new FormData();fd.append('action',action);fd.append('_csrf',window.__csrf||'');
+ Object.entries(values).forEach(([key,value])=>fd.append(key,typeof value==='string'?value:JSON.stringify(value)));
+ const response=await fetch('api.php',{method:'POST',body:fd,credentials:'same-origin'});
+ const data=await response.json().catch(()=>({ok:false,error:'Сервер вернул некорректный ответ'}));
+ if(!response.ok||!data.ok)throw new Error(data.error||'Не удалось синхронизировать сметы');
+ return data;
+}
+function scheduleCloudProjectSave(project){
+ if(!cloudSyncReady||!project||!project.id)return;
+ const id=String(project.id),old=cloudSaveTimers.get(id);if(old)clearTimeout(old);
+ cloudSaveTimers.set(id,setTimeout(async()=>{
+  cloudSaveTimers.delete(id);
+  try{await cloudRequest('estimate.save',{project});}
+  catch(error){console.error('[Concept estimate sync]',error);}
+ },350));
+}
+async function cloudDeleteProject(projectId){
+ if(!cloudSyncReady||!projectId)return;
+ try{await cloudRequest('estimate.delete',{project_id:String(projectId)});}
+ catch(error){console.error('[Concept estimate delete sync]',error);}
+}
+async function syncEstimateWorkspace(){
+ const localProjects=Array.isArray(state.projects)?JSON.parse(JSON.stringify(state.projects)):[];
+ const data=await cloudRequest('estimate.sync',{projects:localProjects});
+ state.projects=Array.isArray(data.projects)?data.projects:[];
+ const preferred=state.currentProjectId&&state.projects.some(p=>String(p.id)===String(state.currentProjectId))?state.currentProjectId:null;
+ state.currentProjectId=preferred||(state.projects[0]?.id??null);
+ const current=state.projects.find(p=>String(p.id)===String(state.currentProjectId));
+ if(current){
+  state.sections=JSON.parse(JSON.stringify(current.sections||[]));
+  state.winter=!!current.winter;state.tight=!!current.tight;state.custom=num(current.custom)||1;state.method=current.method||'resource';
+ }else{
+  state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';
+ }
+ localStorage.setItem(KEY,JSON.stringify(state));
+ cloudSyncReady=true;
+}
 let customTemplates=[];
 try{const savedTemplates=JSON.parse(localStorage.getItem(CUSTOM_TEMPLATES_KEY)||'[]');customTemplates=Array.isArray(savedTemplates)?savedTemplates:[]}catch(e){customTemplates=[];}
 const templates={
@@ -313,7 +353,7 @@ const money=n=>new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFra
 const num=n=>{const x=Number(String(n??'').replace(',','.'));return Number.isFinite(x)?x:0};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
-function save(){if(state.currentProjectId){const p=state.projects.find(x=>x.id===state.currentProjectId);if(p){p.sections=JSON.parse(JSON.stringify(state.sections));p.winter=state.winter;p.tight=state.tight;p.custom=state.custom;p.method=state.method;}}localStorage.setItem(KEY,JSON.stringify(state));}
+function save(){if(state.currentProjectId){const p=state.projects.find(x=>String(x.id)===String(state.currentProjectId));if(p){p.sections=JSON.parse(JSON.stringify(state.sections));p.winter=state.winter;p.tight=state.tight;p.custom=state.custom;p.method=state.method;scheduleCloudProjectSave(p);}}localStorage.setItem(KEY,JSON.stringify(state));}
 function projectTotal(p){let d=0;(p.sections||[]).forEach(s=>(s.items||[]).forEach(i=>d+=num(i.quantity)*num(i.price)));const coeff=(p.winter?1.12:1)*(p.tight?1.08:1)*(Math.max(.001,num(p.custom)||1));const base=d*coeff,over=base*.15,profit=base*.08;return base+over+profit+(base+over+profit)*.2;}
 function snapshotCurrent(){return JSON.parse(JSON.stringify({sections:state.sections,winter:state.winter,tight:state.tight,custom:state.custom,method:state.method}));}
 function renderProjects(){
@@ -410,7 +450,7 @@ function deleteProject(id){
  showConfirm('Удалить проект?','Проект «'+p.name+'» и вся его смета будут удалены без возможности восстановления.','Удалить проект',()=>{
    state.projects=state.projects.filter(x=>x.id!==id);
    if(state.currentProjectId===id){state.currentProjectId=null;state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';}
-   save();renderProjects();
+   save();cloudDeleteProject(id);renderProjects();
  });
 }
 function openProject(id){
@@ -704,12 +744,25 @@ document.getElementById('smCustomTemplates').onclick=e=>{
  const use=e.target.closest('[data-custom-template-use]');if(use)applyCustomTemplate(use.dataset.customTemplateUse);
 };
 document.addEventListener('click',e=>{if(e.target.closest('#smEmptyAdd'))addSection();if(e.target.closest('#smEmptyProject'))createProject();});
-loadSaved();
+load();
 renderCustomTemplates();
 document.getElementById('smProjectsView').style.display='block';
 document.getElementById('smEstimateApp').style.display='none';
 document.getElementById('smDocumentsWorkspace').hidden=true;
-renderProjects();
+(async function bootEstimateWorkspace(){
+ try{
+  await syncEstimateWorkspace();
+ }catch(error){
+  console.error('[Concept estimate sync]',error);
+  alert('Не удалось синхронизировать сметы с сервером. Текущие данные этого браузера сохранены; проверь подключение и обнови страницу.\n\n'+(error.message||'Ошибка синхронизации'));
+ }
+ document.getElementById('smWinter').checked=state.winter;
+ document.getElementById('smTight').checked=state.tight;
+ document.getElementById('smCustom').value=state.custom;
+ document.getElementById('smMethod').value=state.method;
+ render();
+ renderProjects();
+})();
 })();
 </script>
 
