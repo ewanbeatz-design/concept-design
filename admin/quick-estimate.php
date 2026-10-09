@@ -301,6 +301,7 @@ const DOCS_KEY='concept_estimate_documents_v1';
 let currentDocumentType='contract';
 const state={sections:[],winter:false,tight:false,custom:1,method:'resource',projects:[],currentProjectId:null};
 let cloudSyncReady=false;
+let cloudSyncInFlight=false;
 const cloudSaveTimers=new Map();
 async function cloudRequest(action, values={}){
  const fd=new FormData();fd.append('action',action);fd.append('_csrf',window.__csrf||'');
@@ -325,20 +326,24 @@ async function cloudDeleteProject(projectId){
  catch(error){console.error('[Concept estimate delete sync]',error);}
 }
 async function syncEstimateWorkspace(){
- const localProjects=Array.isArray(state.projects)?JSON.parse(JSON.stringify(state.projects)):[];
- const data=await cloudRequest('estimate.sync',{projects:localProjects});
- state.projects=Array.isArray(data.projects)?data.projects:[];
- const preferred=state.currentProjectId&&state.projects.some(p=>String(p.id)===String(state.currentProjectId))?state.currentProjectId:null;
- state.currentProjectId=preferred||(state.projects[0]?.id??null);
- const current=state.projects.find(p=>String(p.id)===String(state.currentProjectId));
- if(current){
-  state.sections=JSON.parse(JSON.stringify(current.sections||[]));
-  state.winter=!!current.winter;state.tight=!!current.tight;state.custom=num(current.custom)||1;state.method=current.method||'resource';
- }else{
-  state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';
- }
- localStorage.setItem(KEY,JSON.stringify(state));
- cloudSyncReady=true;
+ if(cloudSyncInFlight)return;
+ cloudSyncInFlight=true;
+ try{
+  const localProjects=Array.isArray(state.projects)?JSON.parse(JSON.stringify(state.projects)):[];
+  const data=await cloudRequest('estimate.sync',{projects:localProjects});
+  state.projects=Array.isArray(data.projects)?data.projects:[];
+  const preferred=state.currentProjectId&&state.projects.some(p=>String(p.id)===String(state.currentProjectId))?state.currentProjectId:null;
+  state.currentProjectId=preferred||(state.projects[0]?.id??null);
+  const current=state.projects.find(p=>String(p.id)===String(state.currentProjectId));
+  if(current){
+   state.sections=JSON.parse(JSON.stringify(current.sections||[]));
+   state.winter=!!current.winter;state.tight=!!current.tight;state.custom=num(current.custom)||1;state.method=current.method||'resource';
+  }else{
+   state.sections=[];state.winter=false;state.tight=false;state.custom=1;state.method='resource';
+  }
+  localStorage.setItem(KEY,JSON.stringify(state));
+  cloudSyncReady=true;
+ }finally{cloudSyncInFlight=false;}
 }
 let customTemplates=[];
 try{const savedTemplates=JSON.parse(localStorage.getItem(CUSTOM_TEMPLATES_KEY)||'[]');customTemplates=Array.isArray(savedTemplates)?savedTemplates:[]}catch(e){customTemplates=[];}
@@ -762,6 +767,13 @@ document.getElementById('smDocumentsWorkspace').hidden=true;
  document.getElementById('smMethod').value=state.method;
  render();
  renderProjects();
+ // Пока открыт список проектов, подтягиваем изменения с других устройств каждые 15 секунд.
+ setInterval(async()=>{
+  const view=document.getElementById('smProjectsView');
+  if(!cloudSyncReady||cloudSyncInFlight||!view||view.style.display==='none')return;
+  try{await syncEstimateWorkspace();renderProjects();}
+  catch(error){console.error('[Concept estimate sync]',error);}
+ },15000);
 })();
 })();
 </script>
