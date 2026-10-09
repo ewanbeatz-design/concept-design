@@ -423,14 +423,43 @@ function applyTemplate(type){const data=templates[type];if(!data)return;data.for
 function showConfirm(title,text,ok,action){document.getElementById('smConfirmTitle').textContent=title;document.getElementById('smConfirmText').textContent=text;const b=document.getElementById('smConfirmOk');b.textContent=ok;b.onclick=()=>{bootstrap.Modal.getInstance(document.getElementById('smConfirmModal'))?.hide();action();};bootstrap.Modal.getOrCreateInstance(document.getElementById('smConfirmModal')).show();}
 function exportPrint(){window.print();}
 function loadSaved(){load();document.getElementById('smWinter').checked=state.winter;document.getElementById('smTight').checked=state.tight;document.getElementById('smCustom').value=state.custom;document.getElementById('smMethod').value=state.method;render();}
-document.addEventListener('dblclick',e=>{const row=e.target.closest('.sm-row');if(!row||e.target.closest('.sm-actions'))return;const sid=row.closest('.sm-group')?.dataset.sid;if(!sid||!row.dataset.iid)return;openManualEntry(sid,row.dataset.iid);});
+function editEstimateRow(row){
+ if(!row||row.classList.contains('editing'))return;
+ const sid=row.closest('.sm-group')?.dataset.sid;
+ const s=state.sections.find(x=>x.id===sid);
+ const it=s?.items.find(x=>x.id===row.dataset.iid);
+ if(!s||!it)return;
+ row.classList.add('editing');
+ row.innerHTML='<div class="sm-work"><i class="sm-dot"></i><input class="sm-cell-input js-edit-name" aria-label="Наименование" value="'+esc(it.name)+'"></div><div><input class="sm-cell-input js-edit-qty" aria-label="Количество" type="number" min=".001" step=".001" value="'+esc(String(it.quantity))+'"></div><div><input class="sm-cell-input js-edit-unit" aria-label="Единица измерения" value="'+esc(it.unit)+'"></div><div><input class="sm-cell-input js-edit-price" aria-label="Цена" type="number" min="0" step=".01" value="'+esc(String(it.price))+'"></div><strong class="js-edit-sum">—</strong><div class="sm-actions"><button type="button" data-action="save-inline-item" title="Сохранить"><i class="bi bi-check2"></i></button><button type="button" data-action="cancel-inline-item" title="Отменить"><i class="bi bi-x-lg"></i></button></div>';
+ row.querySelector('.js-edit-name')?.focus();
+ row.querySelector('.js-edit-name')?.select();
+}
+function saveEstimateRow(row){
+ if(!row)return;
+ const sid=row.closest('.sm-group')?.dataset.sid;
+ const s=state.sections.find(x=>x.id===sid);
+ const it=s?.items.find(x=>x.id===row.dataset.iid);
+ if(!s||!it)return;
+ const name=row.querySelector('.js-edit-name')?.value.trim()||'';
+ const quantity=num(row.querySelector('.js-edit-qty')?.value);
+ const unit=row.querySelector('.js-edit-unit')?.value.trim()||'шт';
+ const price=num(row.querySelector('.js-edit-price')?.value);
+ if(!name){row.querySelector('.js-edit-name')?.focus();return;}
+ if(quantity<=0){row.querySelector('.js-edit-qty')?.focus();return;}
+ if(price<0){row.querySelector('.js-edit-price')?.focus();return;}
+ Object.assign(it,{name,quantity,unit,price});
+ render();
+}
+document.addEventListener('dblclick',e=>{const row=e.target.closest('.sm-row');if(!row||e.target.closest('.sm-actions'))return;if(!row.dataset.iid)return;editEstimateRow(row);});
 document.addEventListener('click',e=>{
  const t=e.target.closest('[data-action]');if(!t)return;
  const g=t.closest('.sm-group'),sid=t.dataset.sid||g?.dataset.sid,action=t.dataset.action;
  if(action==='delete-section'){showConfirm('Удалить раздел?','Раздел и все его позиции будут удалены.','Удалить',()=>{state.sections=state.sections.filter(s=>s.id!==sid);render();});}
  if(action==='catalog')openCatalog(sid);
  if(action==='manual')openManualEntry(sid);
- if(action==='edit-item'){const row=t.closest('.sm-row');openManualEntry(sid,row.dataset.iid);}
+ if(action==='edit-item'){const row=t.closest('.sm-row');editEstimateRow(row);}
+ if(action==='save-inline-item'){saveEstimateRow(t.closest('.sm-row'));}
+ if(action==='cancel-inline-item'){render();}
  if(action==='delete-item'){const row=t.closest('.sm-row');const s=state.sections.find(x=>x.id===sid);if(s)showConfirm('Удалить позицию?','Позиция будет удалена из текущей сметы.','Удалить',()=>{s.items=s.items.filter(i=>i.id!==row.dataset.iid);render();});}
 });
 document.getElementById('smSectionSave').onclick=()=>{const id=document.getElementById('smSectionId').value,name=document.getElementById('smSectionName').value.trim();if(!name){document.getElementById('smSectionName').focus();return;}const s=state.sections.find(x=>x.id===id);if(s)s.name=name;bootstrap.Modal.getInstance(document.getElementById('smSectionModal'))?.hide();render();};
