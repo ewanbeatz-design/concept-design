@@ -504,14 +504,14 @@ function renderCustomTemplates(){
  empty.hidden=customTemplates.length>0;
 }
 function saveCustomTemplates(){localStorage.setItem(CUSTOM_TEMPLATES_KEY,JSON.stringify(customTemplates));renderCustomTemplates();}
-function openSaveTemplate(){const hasItems=state.sections.some(s=>(s.items||[]).length);document.getElementById('smTemplateName').value='';document.getElementById('smTemplateSaveError').hidden=hasItems;document.getElementById('smSaveTemplateConfirm').disabled=!hasItems;bootstrap.Modal.getOrCreateInstance(document.getElementById('smSaveTemplateModal')).show();setTimeout(()=>document.getElementById('smTemplateName').focus(),250);}
+function openSaveTemplate(){const hasItems=state.sections.some(s=>(s.items||[]).length);document.getElementById('smTemplateName').value='';document.getElementById('smTemplateSaveError').hidden=hasItems;document.getElementById('smSaveTemplateConfirm').disabled=!hasItems;const open=()=>{bootstrap.Modal.getOrCreateInstance(document.getElementById('smSaveTemplateModal')).show();setTimeout(()=>document.getElementById('smTemplateName').focus(),250);};const templatesModal=bootstrap.Modal.getInstance(document.getElementById('smTemplateModal'));if(templatesModal){templatesModal.hide();setTimeout(open,250);}else open();}
 function saveCustomTemplate(){
  const name=document.getElementById('smTemplateName').value.trim();
  if(!state.sections.some(s=>(s.items||[]).length)){document.getElementById('smTemplateSaveError').hidden=false;return;}
  if(!name){document.getElementById('smTemplateName').focus();return;}
  const copy=state.sections.filter(s=>(s.items||[]).length).map(s=>({name:s.name,items:s.items.map(i=>({name:i.name,unit:i.unit,price:num(i.price),quantity:num(i.quantity)||1}))}));
  customTemplates.unshift({id:uid(),name,sections:copy,createdAt:new Date().toISOString()});
- saveCustomTemplates();bootstrap.Modal.getInstance(document.getElementById('smSaveTemplateModal'))?.hide();
+ saveCustomTemplates();bootstrap.Modal.getInstance(document.getElementById('smSaveTemplateModal'))?.hide();setTimeout(()=>bootstrap.Modal.getOrCreateInstance(document.getElementById('smTemplateModal')).show(),250);
 }
 function applyCustomTemplate(id){
  const t=customTemplates.find(x=>x.id===id);if(!t)return;
@@ -591,7 +591,7 @@ document.getElementById('smSaveTemplateConfirm').onclick=saveCustomTemplate;
 document.getElementById('smTemplateName').addEventListener('keydown',e=>{if(e.key==='Enter')saveCustomTemplate();});
 document.getElementById('smCustomTemplates').onclick=e=>{
  const del=e.target.closest('[data-custom-template-delete]');
- if(del){e.stopPropagation();const id=del.dataset.customTemplateDelete;const t=customTemplates.find(x=>x.id===id);if(t&&confirm('Удалить шаблон «'+t.name+'»?')){customTemplates=customTemplates.filter(x=>x.id!==id);saveCustomTemplates();}return;}
+ if(del){e.stopPropagation();const id=del.dataset.customTemplateDelete;const t=customTemplates.find(x=>x.id===id);if(t)showConfirm('Удалить шаблон?','Шаблон «'+t.name+'» будет удалён.','Удалить',()=>{customTemplates=customTemplates.filter(x=>x.id!==id);saveCustomTemplates();});return;}
  const use=e.target.closest('[data-custom-template-use]');if(use)applyCustomTemplate(use.dataset.customTemplateUse);
 };
 document.addEventListener('click',e=>{if(e.target.closest('#smEmptyAdd'))addSection();if(e.target.closest('#smEmptyProject'))createProject();});
