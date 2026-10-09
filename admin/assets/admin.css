@@ -3245,3 +3245,74 @@ html[data-admin-theme="light"] .projects-filter-select{background:var(--bg-2);co
     .projects-bottom-callout{align-items:flex-start;}
     .workspace-text-link{margin-left:0;}
 }
+
+
+/* ============================================================
+   CONCEPT ADMIN — единая светлая палитра основного сайта
+   ============================================================ */
+:root {
+    --bg: #f1eee8;
+    --bg-2: #f8f6f1;
+    --bg-3: #e8e5de;
+    --ink: #171714;
+    --muted: #74716b;
+    --muted-2: #99948a;
+    --line: rgba(17,17,15,.11);
+    --line-2: rgba(17,17,15,.18);
+    --gold: #b78961;
+    --gold-2: #8c6342;
+    --danger: #c83f3f;
+    --success: #36784d;
+    --info: #3d6f9f;
+}
+body { background:var(--bg); color:var(--ink); }
+.admin-sidebar { background:#11110f; border-right-color:rgba(255,255,255,.09); }
+.admin-logo__img { filter:none; }
+.admin-nav a { color:rgba(255,255,255,.68); }
+.admin-nav a:hover { background:rgba(255,255,255,.07); color:#fff; }
+.admin-nav a.active { background:rgba(199,157,117,.18); color:#f7e4bb; }
+.admin-user { background:rgba(255,255,255,.045); border-color:rgba(255,255,255,.1); }
+.admin-user-info strong { color:#f6f4ef; }
+.admin-user-info small { color:#aaa69d; }
+.admin-topbar { background:rgba(248,246,241,.94); border-bottom-color:var(--line); backdrop-filter:blur(16px); }
+.admin-menu-toggle { color:var(--ink); }
+.admin-page-title { color:var(--ink); }
+.admin-topbar-btn { background:#fffdfa; color:var(--muted); border-color:var(--line); }
+.admin-topbar-btn:hover { background:#11110f; color:#f6f4ef; border-color:#11110f; }
+.admin-content { color:var(--ink); }
+.admin-card,.kpi-card { background:#f8f6f1; border-color:var(--line); box-shadow:0 8px 28px rgba(30,25,20,.035); }
+.admin-card-title,.kpi-value { color:var(--ink); }
+.kpi-card--accent { background:linear-gradient(135deg,rgba(199,157,117,.13),#f8f6f1); border-color:rgba(183,137,97,.4); }
+.kpi-icon { background:rgba(183,137,97,.12); }
+.admin-link,.admin-link-inline,.kpi-link { color:#9b704c; }
+.admin-link:hover,.admin-link-inline:hover,.kpi-link:hover { color:#5e422d; }
+.lead-item { background:rgba(17,17,15,.025); }
+.lead-item:hover { background:rgba(17,17,15,.045); border-color:var(--line); }
+.admin-table th { background:#e8e5de; color:#5f5b54; }
+.admin-table td { border-color:var(--line); }
+.form-control,.form-select,input,select,textarea { color:var(--ink); }
+.admin-content .table { --bs-table-bg:transparent; --bs-table-color:var(--ink); --bs-table-border-color:var(--line); }
+.admin-content .modal-content { background:#f8f6f1; color:var(--ink); border-color:var(--line); }
+.admin-content .btn-close { filter:none; }
+.admin-content .text-muted { color:var(--muted)!important; }
+.admin-content .table-light,.admin-content thead { --bs-table-bg:#e8e5de; --bs-table-color:var(--ink); }
+.admin-content .form-control,.admin-content .form-select,
+.admin-content input:not([type=checkbox]):not([type=radio]),
+.admin-content select,.admin-content textarea {
+    background:#fffdfa; color:var(--ink); border-color:rgba(17,17,15,.17);
+}
+.admin-content .form-control:focus,.admin-content .form-select:focus,
+.admin-content input:focus,.admin-content select:focus,.admin-content textarea:focus {
+    border-color:#b78961; box-shadow:0 0 0 .2rem rgba(183,137,97,.15);
+}
+.admin-content .btn-primary { background:#11110f; border-color:#11110f; color:#f6f4ef; }
+.admin-content .btn-primary:hover { background:#b78961; border-color:#b78961; color:#11110f; }
+.admin-content .btn-outline-secondary { color:#514d46; border-color:var(--line-2); }
+.admin-content .btn-outline-secondary:hover { background:#11110f; color:#fff; }
+.admin-content .badge-new { background:#c79d75; color:#11110f; }
+.admin-content .alert { color:var(--ink); }
+.admin-content hr { border-color:var(--line); }
+.admin-footer { color:var(--muted); border-top-color:var(--line); }
+@media (max-width:760px) {
+    .admin-topbar { background:rgba(248,246,241,.97); }
+}
