@@ -57,7 +57,7 @@ include __DIR__ . '/header.php';
             <p class="hero-lead">Создаём пространство целиком: от первой идеи и 3D-визуализации до производства, монтажа и финального света.</p>
 
             <div class="hero-actions">
-                <a href="#configurator" class="btn-solid">
+                <a href="#project-quiz" class="btn-solid">
                     Рассчитать проект
                     <i class="bi bi-calculator"></i>
                 </a>
@@ -810,7 +810,7 @@ $facadeCollections = dbRows($pdo,
 </section>
 
 <!-- ================= CONFIGURATOR / QUIZ ================= -->
-<section class="section section-light quiz-section" id="configurator" data-aos="fade-up">
+<section class="section section-light quiz-section" id="project-quiz" data-aos="fade-up">
     <div class="container">
         <div class="section-head">
             <div>
