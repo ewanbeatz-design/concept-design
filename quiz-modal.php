@@ -5,7 +5,7 @@
 <section class="modal fade quiz-section quiz-modal" id="project-quiz" tabindex="-1" aria-labelledby="projectQuizTitle" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-    <div class="quiz-modal__bar">
+    <div class="modal-header quiz-modal__bar">
         <a class="quiz-modal__brand" href="#" aria-label="CONCEPT Design">CONCEPT <span>DESIGN</span></a>
         <span class="quiz-modal__note">ПОДБОР ПРОЕКТА</span>
         <button class="quiz-modal__close" type="button" data-bs-dismiss="modal" aria-label="Закрыть расчёт"><span>Закрыть</span><i class="bi bi-x-lg" aria-hidden="true"></i></button>
@@ -244,6 +244,7 @@
             </div>
 
         </div>
+      </div>
     </div>
       </div>
     </div>
