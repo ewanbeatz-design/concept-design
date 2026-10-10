@@ -144,6 +144,26 @@
                 }
             });
 
+            if ($('.work-gallery__carousel').length) {
+                $('.work-gallery__carousel').owlCarousel({
+                    loop: false,
+                    rewind: false,
+                    margin: 18,
+                    nav: true,
+                    dots: false,
+                    autoHeight: false,
+                    navText: [
+                        '<i class="bi bi-chevron-left" aria-hidden="true"></i>',
+                        '<i class="bi bi-chevron-right" aria-hidden="true"></i>'
+                    ],
+                    responsive: {
+                        0:    { items: 1, margin: 12 },
+                        576:  { items: 2, margin: 16 },
+                        992:  { items: 3, margin: 20 }
+                    }
+                });
+            }
+
             $('.partners-carousel').owlCarousel({
                 loop: true,
                 margin: 0,
