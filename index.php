@@ -818,12 +818,17 @@ $facadeCollections = dbRows($pdo,
                 <h2 class="h-display">Соберём<br><em>первичный запрос</em></h2>
             </div>
             <p class="section-head__text">
-                Ответьте на 6 коротких вопросов — получим представление о задаче
+                Ответьте на несколько коротких вопросов — получим представление о задаче
                 и вернёмся с ориентиром по стоимости.
             </p>
         </div>
 
         <div class="quiz" id="quiz" data-aos="fade-up" data-aos-delay="100">
+            <div class="quiz-topline">
+                <span class="quiz-topline__eyebrow">ВАШ ПРОЕКТ · CONCEPT DESIGN</span>
+                <span class="quiz-topline__count" id="quizStepLabel">Выбор направления</span>
+            </div>
+            <div class="quiz-progress-track" aria-hidden="true"><span id="quizProgressFill"></span></div>
 
             <!-- ШАГ 0: выбор направления -->
             <div class="quiz-step active" data-step="0">
@@ -1032,7 +1037,10 @@ $facadeCollections = dbRows($pdo,
                 <button type="button" class="quiz-nav__btn" id="quizPrev" hidden>
                     <i class="bi bi-arrow-left"></i> Назад
                 </button>
-                <div class="quiz-progress" id="quizProgress"></div>
+                <div class="quiz-progress" id="quizProgress" aria-label="Прогресс расчёта"></div>
+                <button type="button" class="quiz-next" id="quizNext" disabled>
+                    Далее <i class="bi bi-arrow-right"></i>
+                </button>
             </div>
 
         </div>
