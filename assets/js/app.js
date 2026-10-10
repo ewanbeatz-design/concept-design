@@ -161,19 +161,35 @@
                     ]
                 });
 
-                const setActiveThumb = (index) => {
+                const setActiveThumb = (index, reveal = false) => {
                     $thumbs.find('.work-gallery__thumb').each(function (i) {
                         const active = i === index;
                         $(this).toggleClass('is-active', active).attr('aria-pressed', active ? 'true' : 'false');
-                        if (active && this.scrollIntoView) {
-                            this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+
+                        // Do not call scrollIntoView here: on initialisation it can scroll
+                        // the entire document to the gallery, then the browser restores
+                        // another position and the page appears to scroll down and back up.
+                        // Reveal the thumbnail by scrolling only its own thumbnail rail,
+                        // and only after the visitor changes the gallery slide.
+                        if (active && reveal) {
+                            const rail = $thumbs[0];
+                            const thumb = this;
+                            if (rail && thumb) {
+                                const thumbTop = thumb.offsetTop - rail.offsetTop;
+                                const thumbBottom = thumbTop + thumb.offsetHeight;
+                                if (thumbTop < rail.scrollTop) {
+                                    rail.scrollTop = thumbTop;
+                                } else if (thumbBottom > rail.scrollTop + rail.clientHeight) {
+                                    rail.scrollTop = thumbBottom - rail.clientHeight;
+                                }
+                            }
                         }
                     });
                     if ($counter.length) $counter.text(String(index + 1).padStart(2, '0'));
                 };
 
                 $gallery.on('changed.owl.carousel', function (event) {
-                    if (event.item) setActiveThumb(event.item.index);
+                    if (event.item) setActiveThumb(event.item.index, true);
                 });
                 $thumbs.on('click', '.work-gallery__thumb', function () {
                     const index = Number(this.dataset.galleryTo);
