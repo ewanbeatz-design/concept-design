@@ -1,5 +1,7 @@
 </main>
 
+<?php include __DIR__ . '/quiz-modal.php'; ?>
+
 <!-- FOOTER -->
 <footer class="footer">
     <div class="container">
