@@ -156,30 +156,29 @@ $isInner = in_array($currentPage, $innerPages, true);
             <img src="/assets/img/concept-logo.svg" alt="Concept Design" class="logo__img">
         </a>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Основная навигация">
             <a href="/projects.php">Проекты</a>
             <a href="/index.php#furniture">Мебель</a>
-            <a href="/index.php#process">Процесс</a>
             <a href="/interiors.php">Интерьеры</a>
-            <a href="/index.php#configurator">Рассчитать</a>
+            <a href="/index.php#process">Этапы работы</a>
             <a href="/index.php#contact">Контакты</a>
         </nav>
 
         <div class="header-right">
-            <a href="tel:+79832264716" class="header-phone">+7 983 226-47-16</a>
+            <a href="tel:+79832264716" class="header-phone" aria-label="Позвонить: +7 983 226-47-16">+7 983 226-47-16</a>
 
             <button type="button" class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
-                <i class="bi bi-sun-fill theme-toggle__sun"></i>
-                <i class="bi bi-moon-stars-fill theme-toggle__moon"></i>
+                <i class="bi bi-sun-fill theme-toggle__sun" aria-hidden="true"></i>
+                <i class="bi bi-moon-stars-fill theme-toggle__moon" aria-hidden="true"></i>
             </button>
 
-            <button class="header-btn d-none d-lg-inline-flex" data-bs-toggle="modal" data-bs-target="#contactModal">
-                Обсудить проект
-                <i class="bi bi-arrow-up-right"></i>
+            <button type="button" class="header-btn" data-bs-toggle="modal" data-bs-target="#project-quiz">
+                Рассчитать проект
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
             </button>
 
-            <button class="circle-btn" id="menuToggle" aria-label="Открыть меню">
-                <i class="bi bi-list"></i>
+            <button type="button" class="circle-btn" id="menuToggle" aria-label="Открыть меню" aria-controls="menuCanvas">
+                <i class="bi bi-list" aria-hidden="true"></i>
             </button>
         </div>
     </div>
