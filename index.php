@@ -149,32 +149,45 @@ include __DIR__ . '/header.php';
             </div>
             <p class="section-head__text">
                 Фотографии мебели и интерьеров CONCEPT Design.
-                Нажмите на снимок, чтобы рассмотреть его в полном размере.
+                Выберите миниатюру слева, чтобы открыть фотографию.
             </p>
         </div>
-
-        <div class="owl-carousel owl-theme work-gallery__carousel" aria-label="Фотографии реализованных работ">
-            <?php foreach ($workPhotos as $i => $photo): ?>
-            <div class="work-gallery__slide">
-                <a class="work-gallery__item"
-                   href="<?= h($photo['src']) ?>"
-                   data-fancybox="all-work-photos"
-                   data-caption="<?= h($photo['title']) ?>"
-                   aria-label="Открыть фотографию: <?= h($photo['title']) ?>">
-                    <img src="<?= h($photo['src']) ?>"
-                         alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
-                         loading="lazy"
-                         decoding="async">
-                    <span class="work-gallery__index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string)count($workPhotos), 2, '0', STR_PAD_LEFT) ?></span>
-                    <span class="work-gallery__caption"><?= h($photo['title']) ?></span>
-                    <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
-                </a>
+        <div class="work-gallery__layout">
+            <div class="work-gallery__thumbs" role="list" aria-label="Миниатюры фотографий">
+                <?php foreach ($workPhotos as $i => $photo): ?>
+                <button class="work-gallery__thumb<?= $i === 0 ? ' is-active' : '' ?>"
+                        type="button" role="listitem" data-gallery-to="<?= $i ?>"
+                        aria-label="Показать фотографию <?= $i + 1 ?>"
+                        aria-pressed="<?= $i === 0 ? 'true' : 'false' ?>">
+                    <img src="<?= h($photo['src']) ?>" alt="" loading="lazy" decoding="async">
+                    <span><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
+                </button>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
+            <div class="work-gallery__viewer">
+                <div class="owl-carousel owl-theme work-gallery__carousel" aria-label="Фотографии реализованных работ">
+                    <?php foreach ($workPhotos as $i => $photo): ?>
+                    <div class="work-gallery__slide">
+                        <a class="work-gallery__item" href="<?= h($photo['src']) ?>"
+                           data-fancybox="all-work-photos" data-caption="<?= h($photo['title']) ?>"
+                           aria-label="Открыть фотографию в полном размере: <?= h($photo['title']) ?>">
+                            <img src="<?= h($photo['src']) ?>"
+                                 alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
+                                 loading="<?= $i === 0 ? 'eager' : 'lazy' ?>" decoding="async">
+                            <span class="work-gallery__caption"><?= h($photo['title']) ?></span>
+                            <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrows-angle-expand"></i></span>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="work-gallery__meta">
+                    <span>CONCEPT DESIGN / PORTFOLIO</span>
+                    <span class="work-gallery__counter"><b id="workGalleryCurrent">01</b> / <?= str_pad((string)count($workPhotos), 2, '0', STR_PAD_LEFT) ?></span>
+                </div>
+            </div>
         </div>
-
         <div class="work-gallery__footer">
-            <span>CONCEPT DESIGN / PORTFOLIO</span>
+            <span>ИНТЕРЬЕРЫ · МЕБЕЛЬ · РЕАЛИЗАЦИЯ</span>
             <a href="projects.php" class="text-link dark">О проектах подробнее <span>↗</span></a>
         </div>
     </div>
