@@ -173,7 +173,7 @@ include __DIR__ . '/header.php';
                     <span>CONCEPT DESIGN / PORTFOLIO</span>
                     <span class="work-gallery__counter"><b id="workGalleryCurrent">01</b> / <?= str_pad((string)count($workPhotos), 2, '0', STR_PAD_LEFT) ?></span>
                 </div>
-        <div class="work-gallery__layout">
+            </div>
             <div class="work-gallery__thumbs" role="list" aria-label="Миниатюры фотографий">
                 <?php foreach ($workPhotos as $i => $photo): ?>
                 <button class="work-gallery__thumb<?= $i === 0 ? ' is-active' : '' ?>"
