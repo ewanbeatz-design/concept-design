@@ -125,7 +125,7 @@ include __DIR__ . '/header.php';
                                  loading="lazy">
                         </div>
                         <div class="project-overlay">
-                            <span>0<?= $i + 1 ?> — <?= h($p['type'] ?? 'PROJECT') ?></span>
+                            <span>0<?= $i + 1 ?> — <?= h(($p['type'] ?? '') === 'FURNITURE' ? 'МЕБЕЛЬ' : (($p['type'] ?? '') === 'INTERIOR' ? 'ИНТЕРЬЕР' : 'ПРОЕКТ')) ?></span>
                             <h3><?= h($p['title']) ?></h3>
                             <p><?= h($p['description']) ?></p>
                             <i class="bi bi-arrow-up-right"></i>
@@ -149,7 +149,7 @@ include __DIR__ . '/header.php';
             </div>
             <p class="section-head__text">
                 Фотографии мебели и интерьеров CONCEPT Design.
-                Выберите миниатюру справа, чтобы открыть фотографию.
+                Выберите миниатюру, чтобы посмотреть работу крупнее.
             </p>
         </div>
         <div class="work-gallery__layout">
