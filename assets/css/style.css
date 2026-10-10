@@ -6929,3 +6929,148 @@ html[data-theme="dark"] .hero .hero-bottom,
 html[data-theme="dark"] :is(.project-card, .project-gallery__item, .project-tile, .video-tile) {
     color: #fff;
 }
+
+/* ============================================================
+   THEME POLISH — content cards inside light sections
+   Keep image cards/overlays intact; only tune text/surface panels.
+   ============================================================ */
+html[data-theme="light"] .section-light :is(
+    .design-format,
+    .design-includes,
+    .design-include,
+    .production-card,
+    .production-note,
+    .config-card,
+    .configurator-card,
+    .faq-item,
+    .feature-card,
+    .team-card,
+    .interior-card__info,
+    .related-card__info,
+    .project-tile__info,
+    .materials-list__item,
+    .process-grid > *
+) {
+    background-color: var(--paper-2);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+html[data-theme="light"] .section-light :is(
+    .design-format__title,
+    .design-format__price,
+    .design-include h3,
+    .production-card__title,
+    .config-card h3,
+    .configurator-card h3,
+    .faq-question,
+    .feature-card h3,
+    .team-card__name,
+    .interior-card__title,
+    .related-card__title,
+    .project-tile__title,
+    .materials-list__title,
+    .process-grid h3
+) {
+    color: var(--ink);
+}
+
+html[data-theme="light"] .section-light :is(
+    .design-format__desc,
+    .design-format__list,
+    .production-card__text,
+    .production-note,
+    .config-card p,
+    .configurator-card p,
+    .faq-answer,
+    .feature-card p,
+    .team-card__role,
+    .team-card__text,
+    .interior-card__desc,
+    .related-card__cat,
+    .project-tile__desc,
+    .process-grid p
+) {
+    color: var(--muted);
+}
+
+html[data-theme="dark"] .section-light :is(
+    .design-format,
+    .design-includes,
+    .design-include,
+    .production-card,
+    .production-note,
+    .config-card,
+    .configurator-card,
+    .faq-item,
+    .feature-card,
+    .team-card,
+    .interior-card__info,
+    .related-card__info,
+    .project-tile__info,
+    .materials-list__item,
+    .process-grid > *
+) {
+    background-color: var(--paper-2);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light :is(
+    .design-format__title,
+    .design-format__price,
+    .design-include h3,
+    .production-card__title,
+    .config-card h3,
+    .configurator-card h3,
+    .faq-question,
+    .feature-card h3,
+    .team-card__name,
+    .interior-card__title,
+    .related-card__title,
+    .project-tile__title,
+    .materials-list__title,
+    .process-grid h3
+) {
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light :is(
+    .design-format__desc,
+    .design-format__list,
+    .production-card__text,
+    .production-note,
+    .config-card p,
+    .configurator-card p,
+    .faq-answer,
+    .feature-card p,
+    .team-card__role,
+    .team-card__text,
+    .interior-card__desc,
+    .related-card__cat,
+    .project-tile__desc,
+    .process-grid p
+) {
+    color: var(--muted);
+}
+
+/* Interactive card states stay subtle and use the brand accent. */
+html[data-theme="light"] .section-light :is(
+    .production-card,
+    .team-card,
+    .feature-card,
+    .config-card,
+    .configurator-card,
+    .faq-item
+):hover,
+html[data-theme="dark"] .section-light :is(
+    .production-card,
+    .team-card,
+    .feature-card,
+    .config-card,
+    .configurator-card,
+    .faq-item
+):hover {
+    border-color: rgba(199, 157, 109, .55);
+}
+
