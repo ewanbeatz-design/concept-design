@@ -15,24 +15,27 @@ $projects = dbRows($pdo,
     ]
 );
 
-// Общая галерея берёт изображения ТОЛЬКО из файловой системы. К БД не обращается.
+// Общая галерея читает фотографии только из assets/uploads/all. К БД не обращается.
 $workPhotos = [];
-$uploadsRoot = __DIR__ . '/assets/uploads/projects';
+$uploadsRoot = __DIR__ . '/assets/uploads/all';
 $uploadsReal = realpath($uploadsRoot);
-if ($uploadsReal !== false && is_dir($uploadsReal)) {
-    $files = glob($uploadsRoot . '/*/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE) ?: [];
-    natsort($files);
-    foreach ($files as $filePath) {
-        if (!is_file($filePath)) continue;
-        $realFile = realpath($filePath);
+if ($uploadsReal !== false && is_dir($uploadsRoot)) {
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+    $directory = new RecursiveDirectoryIterator($uploadsReal, FilesystemIterator::SKIP_DOTS);
+    $iterator = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::LEAVES_ONLY);
+    foreach ($iterator as $fileInfo) {
+        if (!$fileInfo->isFile() || $fileInfo->isLink()) continue;
+        if (!in_array(strtolower($fileInfo->getExtension()), $allowedExtensions, true)) continue;
+        $realFile = $fileInfo->getRealPath();
         if ($realFile === false || strpos($realFile, $uploadsReal . DIRECTORY_SEPARATOR) !== 0) continue;
         $relativePath = str_replace(DIRECTORY_SEPARATOR, '/', substr($realFile, strlen(__DIR__) + 1));
-        $folderName = basename(dirname($realFile));
-        $title = preg_match('/^project-(\\d+)$/i', $folderName, $matches)
+        $parentName = basename(dirname($realFile));
+        $title = preg_match('/^project-(\d+)$/i', $parentName, $matches)
             ? 'Реализованная работа — проект ' . $matches[1]
             : 'Реализованная работа CONCEPT Design';
         $workPhotos[] = ['src' => $relativePath, 'title' => $title];
     }
+    usort($workPhotos, static fn($a, $b) => strnatcasecmp($a['src'], $b['src']));
 }
 
 include __DIR__ . '/header.php';
