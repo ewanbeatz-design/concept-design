@@ -145,23 +145,38 @@
             });
 
             if ($('.work-gallery__carousel').length) {
-                $('.work-gallery__carousel').owlCarousel({
-                    loop: false,
-                    rewind: false,
-                    margin: 18,
-                    nav: true,
-                    dots: false,
-                    autoHeight: false,
+                const $gallery = $('.work-gallery__carousel');
+                const $thumbs = $('.work-gallery__thumbs');
+                const $counter = $('#workGalleryCurrent');
+
+                $gallery.owlCarousel({
+                    items: 1, loop: false, rewind: false, margin: 0, nav: true, dots: false,
+                    smartSpeed: 450, autoHeight: false,
                     navText: [
                         '<i class="bi bi-chevron-left" aria-hidden="true"></i>',
                         '<i class="bi bi-chevron-right" aria-hidden="true"></i>'
-                    ],
-                    responsive: {
-                        0:    { items: 1, margin: 12 },
-                        576:  { items: 2, margin: 16 },
-                        992:  { items: 3, margin: 20 }
-                    }
+                    ]
                 });
+
+                const setActiveThumb = (index) => {
+                    $thumbs.find('.work-gallery__thumb').each(function (i) {
+                        const active = i === index;
+                        $(this).toggleClass('is-active', active).attr('aria-pressed', active ? 'true' : 'false');
+                        if (active && this.scrollIntoView) {
+                            this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+                        }
+                    });
+                    if ($counter.length) $counter.text(String(index + 1).padStart(2, '0'));
+                };
+
+                $gallery.on('changed.owl.carousel', function (event) {
+                    if (event.item) setActiveThumb(event.item.index);
+                });
+                $thumbs.on('click', '.work-gallery__thumb', function () {
+                    const index = Number(this.dataset.galleryTo);
+                    if (Number.isInteger(index) && index >= 0) $gallery.trigger('to.owl.carousel', [index, 450, true]);
+                });
+                setActiveThumb(0);
             }
 
             $('.partners-carousel').owlCarousel({
