@@ -4329,23 +4329,23 @@ html[data-theme="dark"] .privacy-lead {
 }
 
 .theme-toggle__sun {
-    opacity: 1;
-    transform: rotate(0) scale(1);
-}
-
-.theme-toggle__moon {
     opacity: 0;
     transform: rotate(-90deg) scale(.6);
 }
 
+.theme-toggle__moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
 html[data-theme="dark"] .theme-toggle__sun {
-    opacity: 0;
-    transform: rotate(90deg) scale(.6);
+    opacity: 1;
+    transform: rotate(0) scale(1);
 }
 
 html[data-theme="dark"] .theme-toggle__moon {
-    opacity: 1;
-    transform: rotate(0) scale(1);
+    opacity: 0;
+    transform: rotate(90deg) scale(.6);
 }
 
 @media (max-width: 575px) {
@@ -6748,24 +6748,23 @@ html[data-theme="dark"] .quiz-modal .quiz-modal__close:hover {
 }
 
 /* ============================================================
-   PALETTE INVERSION — all content sections across the site
-   Light blocks become dark; dark blocks become light.
-   Photography and project-card overlays remain untouched.
+   DARK THEME — consistent surfaces, text, controls and overlays
+   Editorial dark sections remain dark; light sections become charcoal.
+   Photos and image overlays are intentionally not filtered.
    ============================================================ */
-html[data-theme] body {
-    background: #11110f;
-    color: #f6f4ef;
+html[data-theme="dark"] body {
+    background: var(--paper);
+    color: var(--ink);
 }
 
-/* Formerly light content panels */
-html[data-theme] .section-light,
-html[data-theme] .section-light.section,
-html[data-theme] .privacy-page {
-    background: #11110f !important;
-    color: #f6f4ef !important;
+html[data-theme="dark"] .section-light,
+html[data-theme="dark"] .section-light.section,
+html[data-theme="dark"] .privacy-page {
+    background-color: var(--paper) !important;
+    color: var(--ink);
 }
 
-html[data-theme] .section-light :is(
+html[data-theme="dark"] .section-light :is(
     h1, h2, h3, h4, h5, h6, p, li, label, strong, small,
     .h-display, .h-title, .section-head__text, .kicker,
     .text-link.dark, .manifesto-copy, .manifesto-copy p,
@@ -6775,231 +6774,158 @@ html[data-theme] .section-light :is(
     .design-format__list, .design-format__price, .stats strong, .stats span,
     .privacy-text p, .privacy-block > p, .privacy-list li, .privacy-lead
 ) {
-    color: #f6f4ef !important;
+    color: var(--ink);
 }
 
-html[data-theme] .section-light .h-display em,
-html[data-theme] .section-light .h-title em,
-html[data-theme] .section-light .section-head h2 i,
-html[data-theme] .section-light .manifesto h2 span {
-    color: #c79d75 !important;
+html[data-theme="dark"] .section-light :is(
+    .section-head__text, .manifesto-copy p, .feature-copy p,
+    .process-grid p, .faq-answer, .design-format__desc
+) {
+    color: var(--muted);
 }
 
-html[data-theme] .section-light :is(
+html[data-theme="dark"] .section-light :is(
     .design-format, .design-includes, .design-include, .production-card,
     .production-note, .config-card, .configurator-card, .faq-item,
     .feature-card, .team-card, .accordion-item, .privacy-lead
 ) {
-    background: #20201e !important;
-    border-color: rgba(255,255,255,.16) !important;
-    color: #f6f4ef !important;
+    background-color: var(--paper-2);
+    border-color: var(--line);
+    color: var(--ink);
 }
 
-html[data-theme] .section-light :is(input, select, textarea, .form-control, .form-select) {
-    background: #20201e !important;
-    color: #f6f4ef !important;
-    border-color: rgba(255,255,255,.2) !important;
-}
-
-html[data-theme] .section-light :is(input, textarea, select)::placeholder {
-    color: #a6a39c !important;
-}
-
-html[data-theme] .section-light .accordion-button {
-    background: #20201e !important;
-    color: #f6f4ef !important;
-    box-shadow: none !important;
-}
-
-html[data-theme] .section-light .accordion-button::after {
-    filter: none !important;
-}
-
-html[data-theme] .section-light .text-link.dark {
-    color: #f6f4ef !important;
-}
-
-/* Formerly dark content panels become light */
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .marquee, .design-cta, .footer, .cta
+html[data-theme="dark"] .section-light :is(
+    input, select, textarea, .form-control, .form-select
 ) {
-    background: #f6f4ef !important;
-    color: #11110f !important;
+    background-color: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) :is(
+html[data-theme="dark"] .section-light :is(input, textarea, select)::placeholder {
+    color: var(--gray-2);
+    opacity: 1;
+}
+
+html[data-theme="dark"] .section-light .accordion-button {
+    background-color: transparent;
+    color: var(--ink);
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .section-light .accordion-button:not(.collapsed) {
+    background-color: var(--paper-2);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light .accordion-button::after {
+    filter: invert(1) grayscale(1);
+}
+
+html[data-theme="dark"] :is(.section-dark, .section--dark, .split-dark, .partners, .why-us, .marquee, .design-cta, .footer, .cta) {
+    background-color: #080807;
+    color: var(--white);
+}
+
+html[data-theme="dark"] :is(.section-dark, .section--dark, .split-dark, .partners, .why-us, .design-cta, .footer, .cta) :is(
     h1, h2, h3, h4, h5, h6, p, li, label, strong, small, span,
     .h-display, .h-title, .kicker, .section-head__text, .text-link,
     .material-list, .partner-name, .partners-intro p, .footer-link,
     .footer-copy, .footer-bottom, .cta-content, .split-content
 ) {
-    color: #11110f !important;
+    color: var(--white);
 }
 
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) :is(.h-display em, .h-title em, h2 i, h2 em, .kicker) {
-    color: #806044 !important;
+html[data-theme="dark"] :is(.section-dark, .section--dark, .split-dark, .partners, .why-us, .design-cta, .footer, .cta) :is(.h-display em, .h-title em, h2 i, h2 em) {
+    color: var(--gold);
 }
 
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) :is(.btn--dark, .header-btn, .btn-solid) {
-    background: #11110f !important;
-    color: #f6f4ef !important;
-    border-color: #11110f !important;
+html[data-theme="dark"] .design-cta {
+    background: linear-gradient(135deg, #151513 0%, #222220 100%);
 }
 
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) .text-link.light {
-    color: #11110f !important;
+html[data-theme="dark"] .header.scrolled,
+html[data-theme="dark"] body.page-inner .header,
+html[data-theme="dark"] body.page-inner .header.scrolled {
+    background: rgba(15, 15, 14, .96);
+    color: var(--ink);
+    box-shadow: 0 1px 0 rgba(255,255,255,.10), 0 12px 32px rgba(0,0,0,.18);
 }
 
-html[data-theme] .marquee {
-    border-color: rgba(17,17,15,.16) !important;
+html[data-theme="dark"] .header.scrolled :is(.nav a, .header-phone, .circle-btn),
+html[data-theme="dark"] body.page-inner .header :is(.nav a, .header-phone, .circle-btn) {
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] .marquee :is(span, em) {
-    color: #11110f !important;
+html[data-theme="dark"] .header.scrolled .logo__img,
+html[data-theme="dark"] body.page-inner .header .logo__img {
+    filter: brightness(0) invert(1);
 }
 
-/* Header: preserve white controls over the photographic hero;
-   once the header has a solid background, use the inverted light palette. */
-html[data-theme] .header.scrolled,
-html[data-theme] body.page-inner .header,
-html[data-theme] body.page-inner .header.scrolled {
-    background: rgba(246,244,239,.96) !important;
-    color: #11110f !important;
-    box-shadow: 0 1px 0 rgba(17,17,15,.12), 0 12px 32px rgba(0,0,0,.08) !important;
+html[data-theme="dark"] .theme-toggle,
+html[data-theme="dark"] .header.scrolled .theme-toggle,
+html[data-theme="dark"] body.page-inner .header .theme-toggle {
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] .header.scrolled :is(.nav a, .header-phone, .circle-btn),
-html[data-theme] body.page-inner .header :is(.nav a, .header-phone, .circle-btn) {
-    color: #11110f !important;
-    border-color: rgba(17,17,15,.35) !important;
+html[data-theme="dark"] .offcanvas {
+    background: var(--paper);
+    color: var(--ink);
 }
 
-html[data-theme] .header.scrolled .logo__img,
-html[data-theme] body.page-inner .header .logo__img {
-    filter: brightness(0) !important;
+html[data-theme="dark"] .offcanvas :is(a, p, h1, h2, h3, span, button) {
+    color: var(--ink);
 }
 
-html[data-theme] .header.scrolled .theme-toggle,
-html[data-theme] body.page-inner .header .theme-toggle {
-    color: #11110f !important;
-    border-color: rgba(17,17,15,.35) !important;
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .quiz-modal .modal-content {
+    background: var(--paper);
+    color: var(--ink);
 }
 
-/* Global overlays and standard Bootstrap modal surfaces */
-html[data-theme] .offcanvas {
-    background: #f6f4ef !important;
-    color: #11110f !important;
+html[data-theme="dark"] .quiz-modal .quiz {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] .offcanvas :is(a, p, h1, h2, h3, span, button) {
-    color: #11110f;
+html[data-theme="dark"] .quiz-modal :is(.quiz-step__title, .quiz-topline__count, .quiz-option, .quiz-form label, .quiz-modal__brand, .quiz-modal__close) {
+    color: var(--ink);
 }
 
-html[data-theme] .modal-content,
-html[data-theme] .quiz-modal .modal-content {
-    background: #f6f4ef !important;
-    color: #11110f !important;
+html[data-theme="dark"] .quiz-modal :is(.quiz-step__desc, .quiz-topline__eyebrow) {
+    color: var(--muted);
 }
 
-html[data-theme] .quiz-modal .quiz {
-    background: #fff !important;
-    color: #11110f !important;
-    border-color: rgba(17,17,15,.14) !important;
+html[data-theme="dark"] .quiz-modal .quiz-option,
+html[data-theme="dark"] .quiz-modal .quiz-form :is(input, textarea, select) {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] .quiz-modal :is(.quiz-step__title, .quiz-topline__count, .quiz-option, .quiz-form label, .quiz-modal__brand, .quiz-modal__close) {
-    color: #11110f !important;
+html[data-theme="dark"] .quiz-modal .quiz-modal__close:hover {
+    background: var(--ink);
+    color: var(--paper);
 }
 
-html[data-theme] .quiz-modal :is(.quiz-step__desc, .quiz-topline__eyebrow) {
-    color: #66635d !important;
+html[data-theme="dark"] :is(.back-to-top, .contact-fab__item) {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--line);
 }
 
-html[data-theme] .quiz-modal .quiz-option,
-html[data-theme] .quiz-modal .quiz-form :is(input, textarea, select) {
-    background: #f6f4ef !important;
-    color: #11110f !important;
-    border-color: rgba(17,17,15,.18) !important;
+html[data-theme="dark"] :is(.back-to-top, .contact-fab__item) :is(i, span, svg) {
+    color: var(--ink);
 }
 
-html[data-theme] .quiz-modal .quiz-modal__close:hover {
-    background: #11110f !important;
-    color: #fff !important;
-}
-
-/* Invert dark solid controls on the new dark panels */
-html[data-theme] .section-light :is(.btn--dark, .header-btn) {
-    background: #f6f4ef !important;
-    color: #11110f !important;
-    border-color: #f6f4ef !important;
-}
-
-html[data-theme] .section-light .btn--outline {
-    background: transparent !important;
-    color: #f6f4ef !important;
-    border-color: rgba(255,255,255,.35) !important;
-}
-
-html[data-theme] .section-light .btn--outline:hover {
-    background: #f6f4ef !important;
-    color: #11110f !important;
-}
-
-/* Respect the original photographic hero and image-based project cards. */
-html[data-theme] .hero,
-html[data-theme] .hero .hero-copy,
-html[data-theme] .hero .hero-meta,
-html[data-theme] .hero .hero-bottom {
+/* Keep image-backed cards and the photographic hero unchanged. */
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] .hero .hero-copy,
+html[data-theme="dark"] .hero .hero-meta,
+html[data-theme="dark"] .hero .hero-bottom,
+html[data-theme="dark"] :is(.project-card, .project-gallery__item, .project-tile, .video-tile) {
     color: #fff;
 }
-
-/* Final pass: links, icon controls and floating utilities in inverted panels */
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) a:not(.btn):not(.btn-solid):not(.btn--dark),
-html[data-theme] :is(
-    .section-dark, .section--dark, .split-dark, .partners, .why-us,
-    .design-cta, .footer, .cta
-) :is(button:not(.btn):not(.btn-solid), i, .footer-nav a, .footer-contacts a) {
-    color: #11110f !important;
-}
-
-html[data-theme] :is(.back-to-top, .contact-fab__item) {
-    background: #f6f4ef !important;
-    color: #11110f !important;
-    border-color: rgba(17,17,15,.18) !important;
-}
-
-html[data-theme] :is(.back-to-top, .contact-fab__item) :is(i, span, svg) {
-    color: #11110f !important;
-}
-
-html[data-theme] .back-to-top:hover,
-html[data-theme] .contact-fab__item:hover {
-    background: #e8e5de !important;
-    color: #11110f !important;
-}
-
-html[data-theme] .section-light .text-link.dark:hover {
-    color: #c79d75 !important;
-}
-
-/* Keep image-backed cards and their overlays readable, without tinting photos. */
-html[data-theme] :is(.project-card, .project-gallery__item, .project-tile, .video-tile) {
-    color: #fff;
-}
-
