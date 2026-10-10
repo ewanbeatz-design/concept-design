@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Concept Design — знак</title>
+  <circle cx="32" cy="32" r="27" stroke="#C79D6D" stroke-width="1.5" opacity=".65"/>
+  <path d="M41.5 17.5A18 18 0 1 0 46 42" stroke="#F7F5F0" stroke-width="3" stroke-linecap="round"/>
+  <path d="M32 12v40M12 32h40" stroke="#C79D6D" stroke-width="1.5" opacity=".8"/>
+  <circle cx="32" cy="32" r="5" fill="#C79D6D"/>
+</svg>
