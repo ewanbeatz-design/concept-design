@@ -6672,3 +6672,114 @@ main {
         font-size: 13px;
     }
 }
+
+
+/* ============================================================
+   VISUAL SYSTEM — читаемая иерархия и ритм секций
+   CONCEPT Design / этап 1
+   ============================================================ */
+:root {
+    --paper-bright: #f7f5f0;
+    --paper-deep: #e9e5dd;
+    --display-muted: #8d8579;
+}
+
+/* Чуть более заметный контраст в крупных заголовках */
+.h-display em,
+.h-title em {
+    color: var(--display-muted);
+}
+
+/* Единый вертикальный ритм без чрезмерных пустот */
+.section {
+    padding-block: clamp(76px, 8vw, 124px);
+}
+
+.section-light {
+    padding-block: clamp(76px, 8vw, 124px);
+}
+
+/* Чередование близких фирменных оттенков помогает читать страницу по разделам */
+.manifesto,
+.interior-design,
+.team {
+    background-color: var(--paper-bright);
+}
+
+.projects,
+.work-gallery,
+.interior-gallery,
+.production,
+.video-section,
+.work-process {
+    background-color: var(--paper);
+}
+
+.why-us,
+.facades,
+.feature-reverse {
+    background-color: var(--black);
+}
+
+/* Заголовок и пояснение теперь читаются как два отдельных уровня */
+.section-head {
+    gap: clamp(24px, 4vw, 64px);
+    margin-bottom: clamp(36px, 5.2vw, 68px);
+}
+
+.section-head__text {
+    max-width: 440px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.85;
+}
+
+/* Кикер — служебная подпись, а не конкурент основному заголовку */
+.kicker,
+.section-kicker,
+.eyebrow {
+    line-height: 1.5;
+}
+
+/* Фокус с клавиатуры остаётся хорошо видимым */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+}
+
+/* На мобильном сохраняем ритм, не забирая полезное пространство */
+@media (max-width: 768px) {
+    .section,
+    .section-light {
+        padding-block: 68px;
+    }
+
+    .section-head {
+        gap: 18px;
+        margin-bottom: 34px;
+    }
+
+    .section-head__text {
+        font-size: 14px;
+        line-height: 1.75;
+    }
+}
+
+@media (max-width: 480px) {
+    .section,
+    .section-light {
+        padding-block: 56px;
+    }
+
+    .section-head {
+        margin-bottom: 28px;
+    }
+
+    .kicker,
+    .section-kicker,
+    .eyebrow {
+        margin-bottom: 12px;
+        letter-spacing: .16em;
+    }
+}
