@@ -144,6 +144,29 @@
                 }
             });
 
+            $('.work-gallery__carousel').owlCarousel({
+                loop: $('.work-gallery__carousel .work-gallery__slide').length > 2,
+                rewind: true,
+                margin: 18,
+                nav: true,
+                dots: true,
+                autoplay: false,
+                smartSpeed: 650,
+                touchDrag: true,
+                mouseDrag: true,
+                pullDrag: true,
+                navText: [
+                    '<i class="bi bi-arrow-left"></i>',
+                    '<i class="bi bi-arrow-right"></i>'
+                ],
+                responsive: {
+                    0:    { items: 1, margin: 10 },
+                    640:  { items: 1.35, margin: 14 },
+                    900:  { items: 2.2, margin: 18 },
+                    1280: { items: 2.6, margin: 20 }
+                }
+            });
+
             $('.partners-carousel').owlCarousel({
                 loop: true,
                 margin: 0,
