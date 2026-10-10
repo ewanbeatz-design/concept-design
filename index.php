@@ -176,20 +176,23 @@ include __DIR__ . '/header.php';
             </p>
         </div>
 
-        <div class="work-gallery__grid">
+        <div class="owl-carousel owl-theme work-gallery__carousel" aria-label="Слайдер фотографий реализованных работ">
             <?php foreach ($workPhotos as $i => $photo): ?>
-                <a class="work-gallery__item"
-                   href="<?= h($photo['src']) ?>"
-                   data-fancybox="all-work-photos"
-                   data-caption="<?= h($photo['title']) ?>"
-                   aria-label="Открыть фотографию: <?= h($photo['title']) ?>">
-                    <img src="<?= h($photo['src']) ?>"
-                         alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
-                         loading="lazy"
-                         decoding="async">
-                    <span class="work-gallery__index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
-                    <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
-                </a>
+                <div class="work-gallery__slide">
+                    <a class="work-gallery__item"
+                       href="<?= h($photo['src']) ?>"
+                       data-fancybox="all-work-photos"
+                       data-caption="<?= h($photo['title']) ?>"
+                       aria-label="Открыть фотографию: <?= h($photo['title']) ?>">
+                        <img src="<?= h($photo['src']) ?>"
+                             alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
+                             loading="lazy"
+                             decoding="async">
+                        <span class="work-gallery__index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string)count($workPhotos), 2, '0', STR_PAD_LEFT) ?></span>
+                        <span class="work-gallery__caption"><?= h($photo['title']) ?></span>
+                        <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
+                    </a>
+                </div>
             <?php endforeach; ?>
         </div>
 
