@@ -57,9 +57,12 @@ include __DIR__ . '/header.php';
             <p class="hero-lead">Создаём пространство целиком: от первой идеи и 3D-визуализации до производства, монтажа и финального света.</p>
 
             <div class="hero-actions">
-                <a href="#contact" class="btn-solid">
-                    Обсудить проект
-                    <i class="bi bi-arrow-up-right"></i>
+                <a href="#configurator" class="btn-solid">
+                    Рассчитать проект
+                    <i class="bi bi-calculator"></i>
+                </a>
+                <a href="#contact" class="text-link">
+                    Обсудить проект <i class="bi bi-arrow-up-right"></i>
                 </a>
                 <a href="#projects" class="text-link">
                     Смотреть проекты <span>↘</span>
