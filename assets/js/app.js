@@ -842,7 +842,7 @@ function initInteriorsFilter() {
        ИНИЦИАЛИЗАЦИЯ
        ============================================================ */
 function initHomeScrollRestoration() {
-    const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+    const path = window.location.pathname;
     if (path !== '/' && path !== '/index.php') return;
 
     // The home page must open at the hero, not restore a stale scroll offset
