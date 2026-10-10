@@ -682,77 +682,55 @@ function initPrefetch() {
 }
 
     /* ============================================================
-       QUIZ — подбор (мебель / интерьер)
+       QUIZ — пошаговый расчёт проекта
        ============================================================ */
     (function initQuiz() {
         const quiz = document.getElementById('quiz');
         if (!quiz) return;
 
         const steps = quiz.querySelectorAll('.quiz-step');
-        const branches = quiz.querySelectorAll('.quiz-branch');
         const prevBtn = document.getElementById('quizPrev');
+        const nextBtn = document.getElementById('quizNext');
         const progressEl = document.getElementById('quizProgress');
+        const progressFill = document.getElementById('quizProgressFill');
+        const stepLabel = document.getElementById('quizStepLabel');
         const typeHidden = document.getElementById('quizTypeHidden');
         const answersHidden = document.getElementById('quizAnswersHidden');
+        const nav = quiz.querySelector('.quiz-nav');
+        if (!prevBtn || !nextBtn || !progressEl || !progressFill || !stepLabel) return;
 
-        let quizType = null;       // 'furniture' | 'interior'
-        let currentStep = 0;       // 0 — выбор типа, 1..6 — вопросы, 7 — контакты
+        let quizType = null;
+        let currentStep = 0;
         const totalSteps = 7;
+        const answers = {};
 
-        const answers = {};        // { field: value }
+        function activeStepElement(step) {
+            if (step === 0) return quiz.querySelector('.quiz-step[data-step="0"]');
+            if (step === 7) return quiz.querySelector('.quiz-step--final');
+            const branch = quiz.querySelector('.quiz-branch[data-branch="' + quizType + '"]');
+            return branch ? branch.querySelector('.quiz-step[data-step="' + step + '"]') : null;
+        }
 
-        /* Прогресс */
+        function hasAnswer(step) {
+            if (step === 0) return Boolean(quizType);
+            const active = activeStepElement(step);
+            const option = active && active.querySelector('[data-field]');
+            return Boolean(option && answers[option.dataset.field]);
+        }
+
         function renderProgress() {
             progressEl.innerHTML = '';
             for (let i = 0; i < totalSteps; i++) {
                 const bar = document.createElement('i');
-                if (i < currentStep) bar.classList.add('done');
-                if (i === currentStep) bar.classList.add('active');
+                if (currentStep === 7 || i < currentStep) bar.classList.add('done');
+                if (i === currentStep && currentStep < 7) bar.classList.add('active');
                 progressEl.appendChild(bar);
             }
+            const percent = currentStep === 7 ? 100 : Math.round(((currentStep + 1) / totalSteps) * 100);
+            progressFill.style.width = percent + '%';
+            stepLabel.textContent = currentStep === 7 ? 'Последний шаг — контакты' : 'Шаг ' + (currentStep + 1) + ' из ' + totalSteps;
         }
 
-        /* Показать шаг */
-        function showStep(step) {
-            currentStep = step;
-
-            // скрываем все шаги
-            steps.forEach(s => s.classList.remove('active'));
-
-            // Если выбрана ветка — показываем её шаг
-            if (quizType) {
-                const branch = quiz.querySelector(`.quiz-branch[data-branch="${quizType}"]`);
-                if (branch) {
-                    const target = branch.querySelector(`.quiz-step[data-step="${step}"]`);
-                    if (target) target.classList.add('active');
-                }
-            }
-
-            // Если это шаг 0 — показываем выбор типа
-            if (step === 0) {
-                quiz.querySelector('.quiz-step[data-step="0"]').classList.add('active');
-            }
-
-            // Если это финал — показываем финальный шаг
-            if (step === 7) {
-                const finalStep = quiz.querySelector('.quiz-step--final');
-                if (finalStep) finalStep.classList.add('active');
-
-                // Собираем ответы в hidden
-                buildAnswersHidden();
-            }
-
-            // Кнопка "Назад" — показать/скрыть
-            if (step > 0 && step < 7) {
-                prevBtn.hidden = false;
-            } else {
-                prevBtn.hidden = true;
-            }
-
-            renderProgress();
-        }
-
-        /* Собираем ответы как hidden-поля для отправки */
         function buildAnswersHidden() {
             answersHidden.innerHTML = '';
             Object.entries(answers).forEach(([field, value]) => {
@@ -764,52 +742,54 @@ function initPrefetch() {
             });
         }
 
-        /* Клик по выбору направления */
-        quiz.querySelectorAll('[data-quiz-type]').forEach((btn) => {
+        function showStep(step) {
+            currentStep = step;
+            steps.forEach(el => el.classList.remove('active'));
+            const target = activeStepElement(step);
+            if (target) target.classList.add('active');
+            prevBtn.hidden = step === 0;
+            nextBtn.hidden = step === 7;
+            nextBtn.disabled = step === 7 || !hasAnswer(step);
+            if (nav) nav.classList.toggle('quiz-nav--final', step === 7);
+            if (step === 7) buildAnswersHidden();
+            renderProgress();
+        }
+
+        quiz.querySelectorAll('[data-quiz-type]').forEach(btn => {
             btn.addEventListener('click', () => {
                 quizType = btn.dataset.quizType;
                 typeHidden.value = quizType === 'furniture' ? 'Мебель' : 'Дизайн интерьера';
                 answers.quiz_type = typeHidden.value;
-                showStep(1);
+                quiz.querySelectorAll('[data-quiz-type]').forEach(item => item.classList.toggle('selected', item === btn));
+                nextBtn.disabled = false;
             });
         });
 
-        /* Клик по варианту ответа */
-        quiz.querySelectorAll('.quiz-option[data-field]').forEach((btn) => {
+        quiz.querySelectorAll('.quiz-option[data-field]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const field = btn.dataset.field;
-                const value = btn.dataset.value;
-
-                // помечаем как выбранный
                 const parent = btn.closest('.quiz-options');
-                if (parent) {
-                    parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-                }
-                btn.classList.add('selected');
-
-                answers[field] = value;
-
-                // авто-переход на следующий шаг
-                setTimeout(() => {
-                    if (currentStep < 6) {
-                        showStep(currentStep + 1);
-                    } else {
-                        showStep(7);
-                    }
-                }, 220);
+                if (parent) parent.querySelectorAll('.quiz-option').forEach(item => item.classList.toggle('selected', item === btn));
+                answers[field] = btn.dataset.value;
+                nextBtn.disabled = false;
             });
         });
 
-        /* Кнопка "Назад" */
+        nextBtn.addEventListener('click', () => {
+            if (!hasAnswer(currentStep)) return;
+            if (currentStep < 6) showStep(currentStep + 1);
+            else showStep(7);
+            const active = quiz.querySelector('.quiz-step.active');
+            if (active) active.setAttribute('tabindex', '-1');
+        });
+
         prevBtn.addEventListener('click', () => {
             if (currentStep > 0) showStep(currentStep - 1);
         });
 
-        /* Инициализация */
         showStep(0);
     })();
-    
-/* ============================================================
+    /* ============================================================
    ФИЛЬТР ИНТЕРЬЕРОВ (interiors.php)
    ============================================================ */
 function initInteriorsFilter() {
