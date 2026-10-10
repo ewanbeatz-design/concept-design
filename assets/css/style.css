@@ -6746,3 +6746,223 @@ html[data-theme="dark"] .quiz-modal .quiz-modal__close:hover {
         transition: none !important;
     }
 }
+
+/* ============================================================
+   PALETTE INVERSION — all content sections across the site
+   Light blocks become dark; dark blocks become light.
+   Photography and project-card overlays remain untouched.
+   ============================================================ */
+html[data-theme] body {
+    background: #11110f;
+    color: #f6f4ef;
+}
+
+/* Formerly light content panels */
+html[data-theme] .section-light,
+html[data-theme] .section-light.section,
+html[data-theme] .privacy-page {
+    background: #11110f !important;
+    color: #f6f4ef !important;
+}
+
+html[data-theme] .section-light :is(
+    h1, h2, h3, h4, h5, h6, p, li, label, strong, small,
+    .h-display, .h-title, .section-head__text, .kicker,
+    .text-link.dark, .manifesto-copy, .manifesto-copy p,
+    .feature-copy, .feature-copy p, .process-grid h3, .process-grid p,
+    .faq-question, .faq-answer, .accordion-body, .config-grid label,
+    .form-label, .design-format__title, .design-format__desc,
+    .design-format__list, .design-format__price, .stats strong, .stats span,
+    .privacy-text p, .privacy-block > p, .privacy-list li, .privacy-lead
+) {
+    color: #f6f4ef !important;
+}
+
+html[data-theme] .section-light .h-display em,
+html[data-theme] .section-light .h-title em,
+html[data-theme] .section-light .section-head h2 i,
+html[data-theme] .section-light .manifesto h2 span {
+    color: #c79d75 !important;
+}
+
+html[data-theme] .section-light :is(
+    .design-format, .design-includes, .design-include, .production-card,
+    .production-note, .config-card, .configurator-card, .faq-item,
+    .feature-card, .team-card, .accordion-item, .privacy-lead
+) {
+    background: #20201e !important;
+    border-color: rgba(255,255,255,.16) !important;
+    color: #f6f4ef !important;
+}
+
+html[data-theme] .section-light :is(input, select, textarea, .form-control, .form-select) {
+    background: #20201e !important;
+    color: #f6f4ef !important;
+    border-color: rgba(255,255,255,.2) !important;
+}
+
+html[data-theme] .section-light :is(input, textarea, select)::placeholder {
+    color: #a6a39c !important;
+}
+
+html[data-theme] .section-light .accordion-button {
+    background: #20201e !important;
+    color: #f6f4ef !important;
+    box-shadow: none !important;
+}
+
+html[data-theme] .section-light .accordion-button::after {
+    filter: none !important;
+}
+
+html[data-theme] .section-light .text-link.dark {
+    color: #f6f4ef !important;
+}
+
+/* Formerly dark content panels become light */
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .marquee, .design-cta, .footer, .cta
+) {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+}
+
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) :is(
+    h1, h2, h3, h4, h5, h6, p, li, label, strong, small, span,
+    .h-display, .h-title, .kicker, .section-head__text, .text-link,
+    .material-list, .partner-name, .partners-intro p, .footer-link,
+    .footer-copy, .footer-bottom, .cta-content, .split-content
+) {
+    color: #11110f !important;
+}
+
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) :is(.h-display em, .h-title em, h2 i, h2 em, .kicker) {
+    color: #806044 !important;
+}
+
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) :is(.btn--dark, .header-btn, .btn-solid) {
+    background: #11110f !important;
+    color: #f6f4ef !important;
+    border-color: #11110f !important;
+}
+
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) .text-link.light {
+    color: #11110f !important;
+}
+
+html[data-theme] .marquee {
+    border-color: rgba(17,17,15,.16) !important;
+}
+
+html[data-theme] .marquee :is(span, em) {
+    color: #11110f !important;
+}
+
+/* Header: preserve white controls over the photographic hero;
+   once the header has a solid background, use the inverted light palette. */
+html[data-theme] .header.scrolled,
+html[data-theme] body.page-inner .header,
+html[data-theme] body.page-inner .header.scrolled {
+    background: rgba(246,244,239,.96) !important;
+    color: #11110f !important;
+    box-shadow: 0 1px 0 rgba(17,17,15,.12), 0 12px 32px rgba(0,0,0,.08) !important;
+}
+
+html[data-theme] .header.scrolled :is(.nav a, .header-phone, .circle-btn),
+html[data-theme] body.page-inner .header :is(.nav a, .header-phone, .circle-btn) {
+    color: #11110f !important;
+    border-color: rgba(17,17,15,.35) !important;
+}
+
+html[data-theme] .header.scrolled .logo__img,
+html[data-theme] body.page-inner .header .logo__img {
+    filter: brightness(0) !important;
+}
+
+html[data-theme] .header.scrolled .theme-toggle,
+html[data-theme] body.page-inner .header .theme-toggle {
+    color: #11110f !important;
+    border-color: rgba(17,17,15,.35) !important;
+}
+
+/* Global overlays and standard Bootstrap modal surfaces */
+html[data-theme] .offcanvas {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+}
+
+html[data-theme] .offcanvas :is(a, p, h1, h2, h3, span, button) {
+    color: #11110f;
+}
+
+html[data-theme] .modal-content,
+html[data-theme] .quiz-modal .modal-content {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+}
+
+html[data-theme] .quiz-modal .quiz {
+    background: #fff !important;
+    color: #11110f !important;
+    border-color: rgba(17,17,15,.14) !important;
+}
+
+html[data-theme] .quiz-modal :is(.quiz-step__title, .quiz-topline__count, .quiz-option, .quiz-form label, .quiz-modal__brand, .quiz-modal__close) {
+    color: #11110f !important;
+}
+
+html[data-theme] .quiz-modal :is(.quiz-step__desc, .quiz-topline__eyebrow) {
+    color: #66635d !important;
+}
+
+html[data-theme] .quiz-modal .quiz-option,
+html[data-theme] .quiz-modal .quiz-form :is(input, textarea, select) {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+    border-color: rgba(17,17,15,.18) !important;
+}
+
+html[data-theme] .quiz-modal .quiz-modal__close:hover {
+    background: #11110f !important;
+    color: #fff !important;
+}
+
+/* Invert dark solid controls on the new dark panels */
+html[data-theme] .section-light :is(.btn--dark, .header-btn) {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+    border-color: #f6f4ef !important;
+}
+
+html[data-theme] .section-light .btn--outline {
+    background: transparent !important;
+    color: #f6f4ef !important;
+    border-color: rgba(255,255,255,.35) !important;
+}
+
+html[data-theme] .section-light .btn--outline:hover {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+}
+
+/* Respect the original photographic hero and image-based project cards. */
+html[data-theme] .hero,
+html[data-theme] .hero .hero-copy,
+html[data-theme] .hero .hero-meta,
+html[data-theme] .hero .hero-bottom {
+    color: #fff;
+}
+
