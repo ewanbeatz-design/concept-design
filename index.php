@@ -19,7 +19,7 @@ $projects = dbRows($pdo,
 $workPhotos = [];
 $workPhotoSeen = [];
 $allWorkProjects = dbRows($pdo,
-    "SELECT id, title, image_url, gallery_images FROM projects WHERE is_active = 1 ORDER BY sort_order ASC, created_at DESC",
+    "SELECT * FROM projects WHERE is_active = 1 ORDER BY sort_order ASC, created_at DESC",
     []
 );
 
