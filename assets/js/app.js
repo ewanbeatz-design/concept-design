@@ -43,6 +43,9 @@
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach((a) => {
             a.addEventListener('click', (e) => {
+                // Quiz opener controls a fixed modal; it must not trigger page anchor scrolling.
+                if (a.hasAttribute('data-open-quiz') || a.hasAttribute('data-close-quiz')) return;
+
                 const id = a.getAttribute('href');
                 if (!id || id === '#' || id.length < 2) return;
 
