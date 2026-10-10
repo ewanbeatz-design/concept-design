@@ -830,7 +830,7 @@ $facadeCollections = dbRows($pdo,
             </p>
         </div>
 
-        <div class="quiz" id="quiz" data-aos="fade-up" data-aos-delay="100">
+        <div class="quiz" id="quiz">
             <div class="quiz-topline">
                 <span class="quiz-topline__eyebrow">ВАШ ПРОЕКТ · CONCEPT DESIGN</span>
                 <span class="quiz-topline__count" id="quizStepLabel">Выбор направления</span>
