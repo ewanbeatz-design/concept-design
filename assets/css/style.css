@@ -1560,7 +1560,7 @@ body.page-inner .header.scrolled {
 /* Акценты золотом */
 .marquee em {
     font-style: normal;
-    color: var(--gold-2);
+    color: var(--gold);
     font-weight: 600;
 }
 
@@ -4893,7 +4893,7 @@ main {
 }
 
 .facade-hero__back:hover {
-    color: var(--gold-2);
+    color: var(--gold);
 }
 
 .facade-hero__content {
@@ -6011,7 +6011,7 @@ main {
 }
 
 .interior-hero__back:hover {
-    color: var(--gold-2);
+    color: var(--gold);
 }
 
 .interior-hero__content {
@@ -6581,11 +6581,11 @@ html[data-theme="dark"] .section-light .faq-answer {
 
 html[data-theme="dark"] .section-light .h-display em,
 html[data-theme="dark"] .section-light .h-title em {
-    color: var(--gold-2);
+    color: var(--gold);
 }
 
 html[data-theme="dark"] .section-light .text-link.dark:hover {
-    color: var(--gold-2);
+    color: var(--gold);
 }
 
 html[data-theme="dark"] .section-light :is(.design-format, .design-includes, .design-include, .production-card, .production-note, .config-card, .configurator-card, .faq-item, .feature-card, .team-card) {
