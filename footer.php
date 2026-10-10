@@ -81,12 +81,12 @@
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
 </div>
     <div class="offcanvas-body">
-        <a href="index.php#projects" class="menu-link">Проекты</a>
-        <a href="index.php#furniture" class="menu-link">Мебель</a>
-        <a href="index.php#interiors" class="menu-link">Интерьеры</a>
-        <a href="index.php#process" class="menu-link">Процесс</a>
-        <a href="index.php#configurator" class="menu-link">Рассчитать</a>
-        <a href="index.php#contact" class="menu-link">Контакты</a>
+        <a href="/projects.php" class="menu-link">Проекты <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <a href="/index.php#furniture" class="menu-link">Мебель <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <a href="/interiors.php" class="menu-link">Интерьеры <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <a href="/index.php#process" class="menu-link">Этапы работы <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <a href="/index.php#contact" class="menu-link">Контакты <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <button type="button" class="menu-link menu-link--cta" data-bs-toggle="modal" data-bs-target="#project-quiz" data-bs-dismiss="offcanvas">Рассчитать проект <i class="bi bi-arrow-up-right" aria-hidden="true"></i></button>
     </div>
 </div>
 
