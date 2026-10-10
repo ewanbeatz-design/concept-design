@@ -841,20 +841,7 @@ function initInteriorsFilter() {
     /* ============================================================
        ИНИЦИАЛИЗАЦИЯ
        ============================================================ */
-function initHomeScrollRestoration() {
-    const path = window.location.pathname;
-    if (path !== '/' && path !== '/index.php') return;
-
-    // Let the browser keep its natural position on Back/Forward. Forcing
-    // scrollTo(0, 0) on pageshow caused the visible down-then-up jump when
-    // the browser first restored the previous scroll position.
-    if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'auto';
-    }
-}
-
 function initAll() {
-    initHomeScrollRestoration();
     initProjectsFilter();
     initInteriorsFilter();
     initPageTransitions();
