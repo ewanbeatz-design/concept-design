@@ -15,6 +15,52 @@ $projects = dbRows($pdo,
     ]
 );
 
+// Все фотографии реализованных работ: галереи проектов из БД + загруженные фото из папки проектов.
+$workPhotos = [];
+$workPhotoSeen = [];
+$allWorkProjects = dbRows($pdo,
+    "SELECT id, title, image_url, gallery_images FROM projects WHERE is_active = 1 ORDER BY sort_order ASC, created_at DESC",
+    []
+);
+
+$addWorkPhoto = static function ($src, $title, $projectId = 0) use (&$workPhotos, &$workPhotoSeen): void {
+    $src = trim((string)$src);
+    if ($src === '' || preg_match('/^(javascript:|data:)/i', $src)) return;
+    $key = strtolower($src);
+    if (isset($workPhotoSeen[$key])) return;
+    $workPhotoSeen[$key] = true;
+    $workPhotos[] = [
+        'src' => $src,
+        'title' => trim((string)$title) ?: 'Реализованная работа CONCEPT Design',
+        'project_id' => (int)$projectId,
+    ];
+};
+
+foreach ($allWorkProjects as $workProject) {
+    $projectTitle = (string)($workProject['title'] ?? 'Реализованная работа');
+    $projectId = (int)($workProject['id'] ?? 0);
+    $galleryImages = json_decode((string)($workProject['gallery_images'] ?? '[]'), true);
+    $images = [];
+    if (is_array($galleryImages)) $images = $galleryImages;
+    if (!empty($workProject['image_url'])) array_unshift($images, $workProject['image_url']);
+    foreach ($images as $image) {
+        if (is_array($image)) $image = $image['url'] ?? $image['src'] ?? '';
+        $addWorkPhoto($image, $projectTitle, $projectId);
+    }
+}
+
+// Также подхватываем фотографии, уже лежащие в папках галерей на сайте.
+$uploadedWorkFiles = glob(__DIR__ . '/assets/uploads/projects/*/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE) ?: [];
+natsort($uploadedWorkFiles);
+foreach ($uploadedWorkFiles as $filePath) {
+    $relativePath = str_replace('\\\\', '/', substr($filePath, strlen(__DIR__) + 1));
+    $folderName = basename(dirname($filePath));
+    $folderLabel = preg_match('/project-(\\d+)/', $folderName, $folderMatch)
+        ? 'Реализованная работа — проект ' . $folderMatch[1]
+        : 'Реализованная работа CONCEPT Design';
+    $addWorkPhoto($relativePath, $folderLabel, 0);
+}
+
 include __DIR__ . '/header.php';
 ?>
 
@@ -114,6 +160,46 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </section>
+
+<!-- ================= ALL WORK PHOTOS ================= -->
+<?php if (!empty($workPhotos)): ?>
+<section class="work-gallery section section-light" id="work-gallery" data-aos="fade-up">
+    <div class="container">
+        <div class="section-head work-gallery__head">
+            <div>
+                <span class="kicker">01.1 / Реализованные работы</span>
+                <h2 class="h-display">В деталях.<br><em>Без рендера — реальные работы</em></h2>
+            </div>
+            <p class="section-head__text">
+                <?= count($workPhotos) ?> фотографий мебели и интерьеров, которые мы создали.
+                Нажмите на снимок, чтобы рассмотреть его в полном размере.
+            </p>
+        </div>
+
+        <div class="work-gallery__grid">
+            <?php foreach ($workPhotos as $i => $photo): ?>
+                <a class="work-gallery__item"
+                   href="<?= h($photo['src']) ?>"
+                   data-fancybox="all-work-photos"
+                   data-caption="<?= h($photo['title']) ?>"
+                   aria-label="Открыть фотографию: <?= h($photo['title']) ?>">
+                    <img src="<?= h($photo['src']) ?>"
+                         alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
+                         loading="lazy"
+                         decoding="async">
+                    <span class="work-gallery__index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
+                    <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="work-gallery__footer">
+            <span>CONCEPT DESIGN / PORTFOLIO</span>
+            <a href="projects.php" class="text-link dark">О проектах подробнее <span>↗</span></a>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- ================= MARQUEE ================= -->
 <div class="marquee" aria-hidden="true">
