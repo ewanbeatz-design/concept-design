@@ -168,7 +168,7 @@ $isInner = in_array($currentPage, $innerPages, true);
         <div class="header-right">
             <a href="tel:+79832264716" class="header-phone">+7 983 226-47-16</a>
 
-            <button type="button" class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+            <button type="button" class="theme-toggle" id="themeToggle" aria-label="Включить тёмную тему" title="Включить тёмную тему" aria-pressed="false">
                 <i class="bi bi-sun-fill theme-toggle__sun"></i>
                 <i class="bi bi-moon-stars-fill theme-toggle__moon"></i>
             </button>
