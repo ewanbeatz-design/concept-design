@@ -841,7 +841,27 @@ function initInteriorsFilter() {
     /* ============================================================
        ИНИЦИАЛИЗАЦИЯ
        ============================================================ */
+function initHomeScrollRestoration() {
+    const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+    if (path !== '/' && path !== '/index.php') return;
+
+    // The home page must open at the hero, not restore a stale scroll offset
+    // after bfcache/back navigation or late carousel/AOS layout changes.
+    if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+    }
+
+    const goToTop = () => {
+        if (window.location.hash) return;
+        window.scrollTo(0, 0);
+    };
+
+    window.addEventListener('pageshow', goToTop);
+    goToTop();
+}
+
 function initAll() {
+    initHomeScrollRestoration();
     initProjectsFilter();
     initInteriorsFilter();
     initPageTransitions();
