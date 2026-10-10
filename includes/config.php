@@ -11,19 +11,34 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ---------- Подключение к БД ----------
-// Production: секретный конфиг хранится вне публичной директории сайта.
-// Local XAMPP: при отсутствии переменных используется локальная БД.
+// Production: секретный конфиг хранится в includes/concept-design-config.php.
+// Значения из него нельзя перезаписывать пустыми значениями по умолчанию.
 $pdo = null;
 
+unset($dbHost, $dbName, $dbUser, $dbPass);
 $serverConfig = __DIR__ . '/concept-design-config.php';
 if (is_file($serverConfig)) {
     require_once $serverConfig;
 }
 
-$dbHost = getenv('CONCEPT_DB_HOST') ?: 'localhost';
-$dbName = getenv('CONCEPT_DB_NAME') ?: 'u1027561_concept-design';
-$dbUser = getenv('CONCEPT_DB_USER') ?: 'u1027561_concept-desing';
-$dbPass = getenv('CONCEPT_DB_PASSWORD') ?: '';
+// Сначала явные переменные окружения, затем значения секретного конфига,
+// и только в последнюю очередь безопасные локальные значения по умолчанию.
+$serverDbHost = $dbHost ?? null;
+$serverDbName = $dbName ?? null;
+$serverDbUser = $dbUser ?? null;
+$serverDbPass = $dbPass ?? null;
+
+$dbHost = getenv('CONCEPT_DB_HOST');
+if ($dbHost === false || $dbHost === '') $dbHost = $serverDbHost ?: 'localhost';
+
+$dbName = getenv('CONCEPT_DB_NAME');
+if ($dbName === false || $dbName === '') $dbName = $serverDbName ?: 'u1027561_concept-design';
+
+$dbUser = getenv('CONCEPT_DB_USER');
+if ($dbUser === false || $dbUser === '') $dbUser = $serverDbUser ?: 'u1027561_concept-desing';
+
+$dbPass = getenv('CONCEPT_DB_PASSWORD');
+if ($dbPass === false) $dbPass = $serverDbPass ?? '';
 
 try {
     $pdo = new PDO(
@@ -37,6 +52,8 @@ try {
         ]
     );
 } catch (Throwable $e) {
+    // Не показываем реквизиты БД посетителям. Записываем причину в серверный лог.
+    error_log('[CONCEPT DB] Connection failed: ' . $e->getMessage());
     $pdo = null;
 }
 
