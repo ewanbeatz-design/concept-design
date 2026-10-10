@@ -15,6 +15,26 @@ $projects = dbRows($pdo,
     ]
 );
 
+// Общая галерея берёт изображения ТОЛЬКО из файловой системы. К БД не обращается.
+$workPhotos = [];
+$uploadsRoot = __DIR__ . '/assets/uploads/projects';
+$uploadsReal = realpath($uploadsRoot);
+if ($uploadsReal !== false && is_dir($uploadsReal)) {
+    $files = glob($uploadsRoot . '/*/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE) ?: [];
+    natsort($files);
+    foreach ($files as $filePath) {
+        if (!is_file($filePath)) continue;
+        $realFile = realpath($filePath);
+        if ($realFile === false || strpos($realFile, $uploadsReal . DIRECTORY_SEPARATOR) !== 0) continue;
+        $relativePath = str_replace(DIRECTORY_SEPARATOR, '/', substr($realFile, strlen(__DIR__) + 1));
+        $folderName = basename(dirname($realFile));
+        $title = preg_match('/^project-(\\d+)$/i', $folderName, $matches)
+            ? 'Реализованная работа — проект ' . $matches[1]
+            : 'Реализованная работа CONCEPT Design';
+        $workPhotos[] = ['src' => $relativePath, 'title' => $title];
+    }
+}
+
 include __DIR__ . '/header.php';
 ?>
 
@@ -114,6 +134,49 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </section>
+
+<!-- ================= FILESYSTEM WORK GALLERY ================= -->
+<?php if (!empty($workPhotos)): ?>
+<section class="work-gallery section section-light" id="work-gallery" data-aos="fade-up">
+    <div class="container">
+        <div class="section-head work-gallery__head">
+            <div>
+                <span class="kicker">01.1 / Реализованные работы</span>
+                <h2 class="h-display">В деталях.<br><em>Реальные работы</em></h2>
+            </div>
+            <p class="section-head__text">
+                Фотографии мебели и интерьеров CONCEPT Design.
+                Нажмите на снимок, чтобы рассмотреть его в полном размере.
+            </p>
+        </div>
+
+        <div class="owl-carousel owl-theme work-gallery__carousel" aria-label="Фотографии реализованных работ">
+            <?php foreach ($workPhotos as $i => $photo): ?>
+            <div class="work-gallery__slide">
+                <a class="work-gallery__item"
+                   href="<?= h($photo['src']) ?>"
+                   data-fancybox="all-work-photos"
+                   data-caption="<?= h($photo['title']) ?>"
+                   aria-label="Открыть фотографию: <?= h($photo['title']) ?>">
+                    <img src="<?= h($photo['src']) ?>"
+                         alt="<?= h($photo['title']) ?> — фото <?= $i + 1 ?>"
+                         loading="lazy"
+                         decoding="async">
+                    <span class="work-gallery__index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string)count($workPhotos), 2, '0', STR_PAD_LEFT) ?></span>
+                    <span class="work-gallery__caption"><?= h($photo['title']) ?></span>
+                    <span class="work-gallery__zoom" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
+                </a>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="work-gallery__footer">
+            <span>CONCEPT DESIGN / PORTFOLIO</span>
+            <a href="projects.php" class="text-link dark">О проектах подробнее <span>↗</span></a>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- ================= MARQUEE ================= -->
 <div class="marquee" aria-hidden="true">
