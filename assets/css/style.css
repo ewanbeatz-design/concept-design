@@ -6538,3 +6538,211 @@ main {
 }
 @media (prefers-reduced-motion: reduce) { .quiz-modal .quiz-step.active { animation: none; } }
 
+
+/* ============================================================
+   THEME CONSISTENCY — homepage and shared components
+   Light sections follow the selected palette; intentionally dark
+   editorial sections stay dark in both themes.
+   ============================================================ */
+html[data-theme="dark"] .section-light,
+html[data-theme="dark"] .section-light.section,
+html[data-theme="dark"] .privacy-page {
+    background-color: var(--paper);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light :is(h1, h2, h3, h4, h5, h6),
+html[data-theme="dark"] .section-light .h-display,
+html[data-theme="dark"] .section-light .h-title,
+html[data-theme="dark"] .section-light .section-head__text,
+html[data-theme="dark"] .section-light .kicker,
+html[data-theme="dark"] .section-light .text-link.dark,
+html[data-theme="dark"] .section-light .manifesto-copy,
+html[data-theme="dark"] .section-light .manifesto-copy p,
+html[data-theme="dark"] .section-light .feature-copy,
+html[data-theme="dark"] .section-light .feature-copy p,
+html[data-theme="dark"] .section-light .process-grid h3,
+html[data-theme="dark"] .section-light .process-grid p,
+html[data-theme="dark"] .section-light .faq-question,
+html[data-theme="dark"] .section-light .faq-answer,
+html[data-theme="dark"] .section-light .accordion-body,
+html[data-theme="dark"] .section-light .config-grid label,
+html[data-theme="dark"] .section-light .config-grid .form-label {
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light .section-head__text,
+html[data-theme="dark"] .section-light .manifesto-copy p,
+html[data-theme="dark"] .section-light .feature-copy p,
+html[data-theme="dark"] .section-light .process-grid p,
+html[data-theme="dark"] .section-light .faq-answer {
+    color: var(--muted);
+}
+
+html[data-theme="dark"] .section-light .h-display em,
+html[data-theme="dark"] .section-light .h-title em {
+    color: var(--gold-2);
+}
+
+html[data-theme="dark"] .section-light .text-link.dark:hover {
+    color: var(--gold-2);
+}
+
+html[data-theme="dark"] .section-light :is(.design-format, .design-includes, .design-include, .production-card, .production-note, .config-card, .configurator-card, .faq-item, .feature-card, .team-card) {
+    background-color: var(--paper-2);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light :is(input, select, textarea, .form-control, .form-select) {
+    background-color: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .section-light :is(input, select, textarea, .form-control, .form-select):focus {
+    background-color: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 .2rem rgba(199, 157, 109, .14);
+}
+
+html[data-theme="dark"] .section-light :is(input, textarea)::placeholder {
+    color: var(--gray-2);
+    opacity: 1;
+}
+
+html[data-theme="dark"] .section-light .accordion-button {
+    background-color: transparent;
+    color: var(--ink);
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .section-light .accordion-button:not(.collapsed) {
+    background-color: var(--paper-2);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-light .accordion-button::after {
+    filter: invert(1) grayscale(1);
+}
+
+html[data-theme="dark"] .section-light .accordion-item {
+    background-color: var(--paper);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+/* Correct both supported spellings of dark-section class. */
+.section-dark,
+.section--dark {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.section-dark .kicker,
+.section-dark .section-head__text,
+.section--dark .kicker,
+.section--dark .section-head__text {
+    color: var(--gray-2);
+}
+
+.section-dark .h-display em,
+.section-dark .h-title em,
+.section--dark .h-display em,
+.section--dark .h-title em {
+    color: #c8c1b6;
+}
+
+html[data-theme="dark"] :is(.section-dark, .section--dark, .split-dark, .partners, .why-us, .marquee, .design-cta, .interior-hero) {
+    color: var(--white);
+}
+
+html[data-theme="dark"] :is(.section-dark, .section--dark, .split-dark, .partners, .why-us, .marquee, .design-cta) {
+    background-color: #080807;
+}
+
+html[data-theme="dark"] .design-cta {
+    background: linear-gradient(135deg, #151513 0%, #222220 100%);
+}
+
+html[data-theme="dark"] .partners-intro p {
+    color: var(--gray-1);
+}
+
+html[data-theme="dark"] .partner-name {
+    color: #e8e4dc;
+}
+
+/* Bootstrap quiz modal adapts to the selected theme too. */
+html[data-theme="dark"] .quiz-modal .modal-content {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-step__title,
+html[data-theme="dark"] .quiz-modal .quiz-topline__count,
+html[data-theme="dark"] .quiz-modal .quiz-option,
+html[data-theme="dark"] .quiz-modal .quiz-form label {
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-step__desc,
+html[data-theme="dark"] .quiz-modal .quiz-topline__eyebrow {
+    color: var(--muted);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-option {
+    background: var(--paper);
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-option:hover,
+html[data-theme="dark"] .quiz-modal .quiz-option.selected {
+    border-color: var(--gold);
+    background: var(--paper-2);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-form :is(input, textarea, select) {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-modal__bar {
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-modal__brand,
+html[data-theme="dark"] .quiz-modal .quiz-modal__close {
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-modal__close {
+    border-color: var(--line);
+    background: transparent;
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-modal__close:hover {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html,
+    body,
+    .section-light,
+    .header,
+    .footer,
+    .cta,
+    .modal-content,
+    .card {
+        transition: none !important;
+    }
+}
