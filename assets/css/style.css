@@ -6783,3 +6783,84 @@ main {
         letter-spacing: .16em;
     }
 }
+
+/* ============================================================
+   STAGE 2 — ПЕРВЫЙ ЭКРАН И НАВИГАЦИЯ
+   ============================================================ */
+.header .nav { gap: clamp(14px, 1.65vw, 27px); }
+.header .nav a { font-size: 12px; letter-spacing: .01em; white-space: nowrap; }
+.header .header-right { gap: 14px; }
+.header .header-phone { white-space: nowrap; font-size: 12px; }
+.header .header-btn {
+    background: var(--gold); color: var(--black); padding: 13px 18px;
+    font-size: 10px; letter-spacing: .04em; text-transform: none;
+    font-weight: 700; white-space: nowrap;
+}
+.header .header-btn:hover { background: var(--white); color: var(--black); transform: translateY(-1px); }
+.header .circle-btn { display: none; }
+.hero-copy { max-width: 960px; }
+.hero .eyebrow { margin-bottom: 22px; color: #e4c5a6; font-size: 11px; letter-spacing: .16em; line-height: 1.6; }
+.hero h1 { max-width: 1000px; text-wrap: balance; }
+.hero-lead { max-width: 540px; margin: 28px 0 30px; font-size: 16px; line-height: 1.75; }
+.hero-actions { gap: 28px; }
+.hero-actions .btn-solid {
+    min-height: 54px; padding: 17px 25px; display: inline-flex; align-items: center;
+    justify-content: center; gap: 18px; font-size: 12px; font-weight: 700;
+}
+.hero-actions .btn-solid i { font-size: 16px; transition: transform .25s var(--ease); }
+.hero-actions .btn-solid:hover i { transform: translate(3px, -3px); }
+.hero-secondary-link {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
+    color: rgba(255,255,255,.94); font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,.42);
+    transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.hero-secondary-link i { font-size: 15px; transition: transform .25s var(--ease); }
+.hero-secondary-link:hover { color: var(--gold-light); border-color: var(--gold); }
+.hero-secondary-link:hover i { transform: translate(3px, 3px); }
+.offcanvas-body { display: flex; flex-direction: column; gap: 0; padding: 28px 28px 36px; }
+.offcanvas-body .menu-link {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    width: 100%; padding: 19px 0; border: 0;
+    border-bottom: 1px solid rgba(255,255,255,.14); background: transparent;
+    color: var(--white); text-align: left; font: 500 19px/1.3 var(--font-main);
+    text-decoration: none;
+}
+.offcanvas-body .menu-link i { color: var(--gold); font-size: 15px; flex: 0 0 auto; }
+.offcanvas-body .menu-link:hover { color: var(--gold-light); }
+.offcanvas-body .menu-link--cta {
+    margin-top: 24px; padding: 17px 20px; border: 0; border-radius: 2px;
+    background: var(--gold); color: var(--black); font-size: 14px; font-weight: 700;
+}
+.offcanvas-body .menu-link--cta i { color: var(--black); }
+@media (max-width: 1250px) {
+    .header .nav { gap: 15px; }
+    .header .nav a { font-size: 11px; }
+    .header .header-right { gap: 10px; }
+    .header .header-phone { display: none; }
+}
+@media (max-width: 1100px) {
+    .header .nav { display: none; }
+    .header .circle-btn { display: inline-flex; }
+    .header .header-btn { display: inline-flex !important; }
+}
+@media (max-width: 767px) {
+    .hero { height: auto; min-height: max(680px, 100svh); }
+    .hero-inner { min-height: max(680px, 100svh); padding: 108px 22px 25px; }
+    .hero-meta { font-size: 8px; letter-spacing: .12em; gap: 16px; }
+    .hero-copy { padding: 38px 0 42px; }
+    .hero .eyebrow { max-width: 290px; margin-bottom: 18px; font-size: 9px; letter-spacing: .12em; }
+    .hero h1 { font-size: clamp(43px, 9.5vw, 66px); line-height: .98; letter-spacing: -.055em; }
+    .hero-lead { max-width: 420px; margin: 22px 0 26px; font-size: 14px; line-height: 1.65; }
+    .hero-actions { align-items: stretch; gap: 17px; }
+    .hero-actions .btn-solid { width: 100%; min-height: 54px; justify-content: space-between; }
+    .hero-secondary-link { min-height: 36px; align-self: flex-start; font-size: 11px; }
+    .header .header-btn { padding: 10px 12px; font-size: 10px; }
+    .header .header-right { gap: 8px; }
+    .header .theme-toggle { display: none; }
+    .offcanvas-body { padding: 24px 22px 30px; }
+}
+@media (max-width: 380px) {
+    .header .header-btn { max-width: 142px; white-space: normal; text-align: center; line-height: 1.2; padding: 9px 10px; }
+    .hero-meta span:last-child { text-align: right; }
+}
