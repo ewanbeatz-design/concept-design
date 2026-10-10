@@ -7572,3 +7572,89 @@ textarea:focus-visible {
         transition-duration: .01ms !important;
     }
 }
+
+
+/* ============================================================
+   HOTFIX — quiz modal keeps its own warm light palette
+   The site theme must not recolor this deliberately light quiz.
+   ============================================================ */
+.quiz-modal {
+    --paper: #f7f5f0;
+    --paper-2: #ffffff;
+    --ink: #23201c;
+    --black: #23201c;
+    --white: #ffffff;
+    --gray-1: #77736c;
+    --gray-2: #969087;
+    --muted: #74716b;
+    --gold: #b8895f;
+    --line: rgba(35, 32, 28, .14);
+    color: var(--ink);
+    color-scheme: light;
+}
+
+.quiz-modal .modal-content,
+html[data-theme="dark"] .quiz-modal .modal-content {
+    background: #f7f5f0;
+    color: #23201c;
+}
+
+.quiz-modal .quiz-modal__bar {
+    background: rgba(247, 245, 240, .96);
+    color: #23201c;
+    border-bottom-color: rgba(35, 32, 28, .12);
+}
+
+.quiz-modal .quiz-modal__brand,
+.quiz-modal .quiz-modal__close,
+.quiz-modal .quiz-step__title,
+.quiz-modal .quiz-option {
+    color: #23201c;
+}
+
+.quiz-modal .quiz {
+    background: #ffffff;
+    border-color: rgba(35, 32, 28, .12);
+}
+
+.quiz-modal .quiz-option {
+    background: #f7f5f0;
+    border-color: rgba(35, 32, 28, .16);
+}
+
+.quiz-modal .quiz-option:hover {
+    background: #ffffff;
+    border-color: #b8895f;
+}
+
+.quiz-modal .quiz-option.selected {
+    background: linear-gradient(135deg, rgba(184, 137, 95, .16), rgba(184, 137, 95, .05));
+    border-color: #b8895f;
+    box-shadow: 0 0 0 2px rgba(184, 137, 95, .13);
+}
+
+.quiz-modal .quiz-nav__btn {
+    color: #23201c;
+    border-color: rgba(35, 32, 28, .18);
+}
+
+.quiz-modal .quiz-progress-track {
+    background: rgba(35, 32, 28, .10);
+}
+
+.quiz-modal .quiz-modal__close:hover {
+    background: #23201c;
+    color: #ffffff;
+    border-color: #23201c;
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-modal__close,
+html[data-theme="dark"] .quiz-modal .quiz-nav__btn {
+    color: #23201c;
+}
+
+html[data-theme="dark"] .quiz-modal .quiz-option span,
+html[data-theme="dark"] .quiz-modal .quiz-step__desc,
+html[data-theme="dark"] .quiz-modal .quiz-modal__note {
+    color: #77736c;
+}
