@@ -578,16 +578,30 @@ function initTheme() {
     const html = document.documentElement;
     const toggle = document.getElementById('themeToggle');
 
-    function setTheme(theme) {
-        html.setAttribute('data-theme', theme);
-        try {
-            localStorage.setItem('theme', theme);
-        } catch (e) {}
+    function currentTheme() {
+        return html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     }
 
-    function currentTheme() {
-        return html.getAttribute('data-theme') || 'light';
+    function syncToggle(theme) {
+        if (!toggle) return;
+        const nextTheme = theme === 'dark' ? 'light' : 'dark';
+        const label = nextTheme === 'dark' ? 'Включить тёмную тему' : 'Включить светлую тему';
+        toggle.setAttribute('aria-label', label);
+        toggle.setAttribute('title', label);
+        toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
     }
+
+    function setTheme(theme, persist = true) {
+        const normalized = theme === 'dark' ? 'dark' : 'light';
+        html.setAttribute('data-theme', normalized);
+        syncToggle(normalized);
+        if (persist) {
+            try { localStorage.setItem('theme', normalized); } catch (e) {}
+        }
+    }
+
+    // Synchronize the accessible label on every page, including first load.
+    setTheme(currentTheme(), false);
 
     if (toggle) {
         toggle.addEventListener('click', () => {
@@ -595,15 +609,13 @@ function initTheme() {
         });
     }
 
-    // Слежение за системной темой, если пользователь ещё не выбрал вручную
+    // Follow the OS theme only until the visitor chooses a theme manually.
     if (window.matchMedia) {
         const mq = window.matchMedia('(prefers-color-scheme: dark)');
         const handler = (e) => {
             let saved = null;
             try { saved = localStorage.getItem('theme'); } catch (err) {}
-            if (!saved) {
-                html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-            }
+            if (!saved) setTheme(e.matches ? 'dark' : 'light', false);
         };
         if (mq.addEventListener) mq.addEventListener('change', handler);
         else if (mq.addListener) mq.addListener(handler);
