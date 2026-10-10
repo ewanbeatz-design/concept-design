@@ -52,7 +52,9 @@ body.modal-open {
 }
 
 html {
-    scroll-behavior: smooth;
+    /* Не анимируем восстановление позиции браузером при Back/Forward.
+       Плавность оставляем только у явных переходов по якорям в JS. */
+    scroll-behavior: auto;
 }
 
 body {
@@ -6550,3 +6552,14 @@ main {
     .quiz-modal .quiz-form__row { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .quiz-modal .quiz-step.active { animation: none; } }
+
+
+/* Bootstrap modals must cover fixed site chrome and the backdrop must sit below them. */
+.modal {
+    --bs-modal-zindex: 2060;
+    z-index: 2060;
+}
+.modal-backdrop {
+    --bs-backdrop-zindex: 2050;
+    z-index: 2050;
+}
