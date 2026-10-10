@@ -57,7 +57,7 @@ include __DIR__ . '/header.php';
             <p class="hero-lead">Создаём пространство целиком: от первой идеи и 3D-визуализации до производства, монтажа и финального света.</p>
 
             <div class="hero-actions">
-                <a href="#project-quiz" class="btn-solid">
+                <a href="#project-quiz" class="btn-solid" data-open-quiz>
                     Рассчитать проект
                     <i class="bi bi-calculator"></i>
                 </a>
@@ -810,7 +810,12 @@ $facadeCollections = dbRows($pdo,
 </section>
 
 <!-- ================= CONFIGURATOR / QUIZ ================= -->
-<section class="section section-light quiz-section" id="project-quiz" data-aos="fade-up">
+<section class="section section-light quiz-section quiz-modal" id="project-quiz" role="dialog" aria-modal="true" aria-label="Рассчитать проект CONCEPT Design" aria-hidden="true">
+    <div class="quiz-modal__bar">
+        <a class="quiz-modal__brand" href="#" aria-label="CONCEPT Design">CONCEPT <span>DESIGN</span></a>
+        <span class="quiz-modal__note">ПОДБОР ПРОЕКТА</span>
+        <button class="quiz-modal__close" type="button" data-close-quiz aria-label="Закрыть расчёт"><span>Закрыть</span><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+    </div>
     <div class="container">
         <div class="section-head">
             <div>
