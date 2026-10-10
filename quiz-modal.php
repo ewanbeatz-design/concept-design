@@ -10,6 +10,7 @@
         <span class="quiz-modal__note">ПОДБОР ПРОЕКТА</span>
         <button class="quiz-modal__close" type="button" data-bs-dismiss="modal" aria-label="Закрыть расчёт"><span>Закрыть</span><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
+    <div class="modal-body p-0">
     <div class="container">
         <div class="section-head">
             <div>
@@ -243,6 +244,7 @@
             </div>
 
         </div>
+    </div>
       </div>
     </div>
 </section>
