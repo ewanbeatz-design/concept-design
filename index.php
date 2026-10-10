@@ -52,20 +52,17 @@ include __DIR__ . '/header.php';
         </div>
 
         <div class="hero-copy" data-aos="fade-up" data-aos-delay="200">
-            <p class="eyebrow">CONCEPT DESIGN — STUDIO</p>
+            <p class="eyebrow">ДИЗАЙН ИНТЕРЬЕРА · МЕБЕЛЬ НА ЗАКАЗ · КЕМЕРОВО</p>
             <h1>Дизайнерская<br><em>мебель</em> и интерьеры<br>под ключ</h1>
-            <p class="hero-lead">Создаём пространство целиком: от первой идеи и 3D-визуализации до производства, монтажа и финального света.</p>
+            <p class="hero-lead">От идеи и 3D-визуализации до собственного производства и монтажа. Продумываем интерьер и мебель как единое целое.</p>
 
-            <div class="hero-actions">
+            <div class="hero-actions" aria-label="Основные действия">
                 <button type="button" class="btn-solid" data-bs-toggle="modal" data-bs-target="#project-quiz">
                     Рассчитать проект
-                    <i class="bi bi-calculator"></i>
+                    <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
                 </button>
-                <a href="#contact" class="text-link">
-                    Обсудить проект <i class="bi bi-arrow-up-right"></i>
-                </a>
-                <a href="#projects" class="text-link">
-                    Смотреть проекты <span>↘</span>
+                <a href="#projects" class="hero-secondary-link">
+                    Смотреть реализованные проекты <i class="bi bi-arrow-down-right" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
