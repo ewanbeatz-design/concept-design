@@ -6794,11 +6794,11 @@ main {
 .header .header-right { gap: 14px; }
 .header .header-phone { white-space: nowrap; font-size: 12px; }
 .header .header-btn {
-    background: var(--gold); color: var(--black); padding: 13px 18px;
+    background: #F3DBC3; color: var(--black); padding: 13px 18px;
     font-size: 10px; letter-spacing: .04em; text-transform: none;
     font-weight: 700; white-space: nowrap;
 }
-.header .header-btn:hover { background: var(--white); color: var(--black); transform: translateY(-1px); }
+.header .header-btn:hover { background: #F3DBC3; color: var(--black); transform: translateY(-1px); }
 .header .circle-btn { display: none; }
 .hero-copy { max-width: 960px; }
 .hero .eyebrow { margin-bottom: 22px; color: #e4c5a6; font-size: 11px; letter-spacing: .16em; line-height: 1.6; }
@@ -6832,7 +6832,7 @@ main {
 .offcanvas-body .menu-link:hover { color: var(--gold-light); }
 .offcanvas-body .menu-link--cta {
     margin-top: 24px; padding: 17px 20px; border: 0; border-radius: 2px;
-    background: var(--gold); color: var(--black); font-size: 14px; font-weight: 700;
+    background: #F3DBC3; color: var(--black); font-size: 14px; font-weight: 700;
 }
 .offcanvas-body .menu-link--cta i { color: var(--black); }
 @media (max-width: 1250px) {
