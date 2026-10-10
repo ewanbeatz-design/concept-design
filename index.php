@@ -266,8 +266,13 @@ include __DIR__ . '/header.php';
                     <li>Рекомендации по бюджету</li>
                 </ul>
                 <div class="design-format__price">
-                    от <strong>1 450 ₽</strong> / м²
+                    <span>Стоимость</span>
+                    <strong>от 1 450 ₽</strong>
+                    <small>за м²</small>
                 </div>
+                <button type="button" class="design-format__action" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    Обсудить формат <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                </button>
             </article>
 
             <article class="design-format design-format--hit">
@@ -285,8 +290,13 @@ include __DIR__ . '/header.php';
                     <li>Спецификация материалов и мебели</li>
                 </ul>
                 <div class="design-format__price">
-                    от <strong>3 500 ₽</strong> / м²
+                    <span>Стоимость</span>
+                    <strong>от 3 500 ₽</strong>
+                    <small>за м²</small>
                 </div>
+                <button type="button" class="design-format__action" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    Обсудить формат <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                </button>
             </article>
 
             <article class="design-format">
@@ -303,8 +313,13 @@ include __DIR__ . '/header.php';
                     <li>Сдача объекта под ключ</li>
                 </ul>
                 <div class="design-format__price">
-                    от <strong>3 800 ₽</strong> / м²
+                    <span>Стоимость</span>
+                    <strong>от 3 800 ₽</strong>
+                    <small>за м²</small>
                 </div>
+                <button type="button" class="design-format__action" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    Обсудить формат <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                </button>
             </article>
 
         </div>
