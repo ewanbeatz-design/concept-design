@@ -701,43 +701,14 @@ function initPrefetch() {
         const answersHidden = document.getElementById('quizAnswersHidden');
         const nav = quiz.querySelector('.quiz-nav');
 
-        // Full-screen quiz modal (Marquiz-style).
+        // Bootstrap 5 manages focus, scroll lock, backdrop, and Escape.
+        // Avoid custom open/close handlers that can trigger page scrolling.
         const modal = document.getElementById('project-quiz');
-        const openTriggers = document.querySelectorAll('[data-open-quiz]');
-        const closeTriggers = modal ? modal.querySelectorAll('[data-close-quiz]') : [];
-        let previousFocus = null;
-        let previousBodyOverflow = '';
-
-        function openQuizModal(event) {
-            if (event) event.preventDefault();
-            if (!modal) return;
-            previousFocus = document.activeElement;
-            previousBodyOverflow = document.body.style.overflow;
-            modal.classList.add('is-open');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('quiz-modal-open');
-            document.body.style.overflow = 'hidden';
-            const closeButton = modal.querySelector('[data-close-quiz]');
-            if (closeButton) closeButton.focus();
-        }
-
-        function closeQuizModal() {
-            if (!modal || !modal.classList.contains('is-open')) return;
-            modal.classList.remove('is-open');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('quiz-modal-open');
-            document.body.style.overflow = previousBodyOverflow;
-            if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
-        }
-
-        openTriggers.forEach(trigger => trigger.addEventListener('click', openQuizModal));
-        closeTriggers.forEach(trigger => trigger.addEventListener('click', closeQuizModal));
-        if (modal) {
-            modal.addEventListener('click', event => {
-                if (event.target === modal) closeQuizModal();
-            });
-            document.addEventListener('keydown', event => {
-                if (event.key === 'Escape') closeQuizModal();
+        if (modal && window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modal, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
             });
             const brand = modal.querySelector('.quiz-modal__brand');
             if (brand) brand.addEventListener('click', event => event.preventDefault());
