@@ -724,22 +724,51 @@ $facadeCollections = dbRows($pdo,
     </div>
 </section>
 
-<!-- ================= PROCESS ================= -->
-<section class="section section-light process" id="process" data-aos="fade-up">
+<!-- ================= ЭТАПЫ РАБОТЫ ================= -->
+<section class="work-timeline section-md bg-dark" id="process" aria-labelledby="work-timeline-title">
     <div class="container">
-        <div class="section-head">
-            <div>
-                <span class="kicker">05 / Process</span>
-                <h2 class="h-display">От идеи<br><em>до готового интерьера</em></h2>
-            </div>
-            <p class="section-head__text">Один проект. Одна команда. Один ответственный за результат.</p>
+        <div class="work-timeline__mark" aria-hidden="true">
+            <img src="images/svg/logo-spin.svg" class="work-timeline__spin" alt="">
+        </div>
+        <div class="work-timeline__heading">
+            <span class="kicker">05 / How we work</span>
+            <h2 class="gtrsk text-center" id="work-timeline-title">ЭТАПЫ РАБОТЫ</h2>
+            <p>Понятный процесс — от первого замера до готового интерьера.</p>
         </div>
 
-        <div class="process-grid">
-            <article data-aos="fade-up"><span>01</span><h3>Замер</h3><p>Выезд специалиста, точные замеры, анализ помещения.</p></article>
-            <article data-aos="fade-up" data-aos-delay="100"><span>02</span><h3>Проектирование</h3><p>Планировка, материалы, 3D-визуализация и согласование.</p></article>
-            <article data-aos="fade-up" data-aos-delay="200"><span>03</span><h3>Изготовление</h3><p>Современное производство и контроль каждого узла.</p></article>
-            <article data-aos="fade-up" data-aos-delay="300"><span>04</span><h3>Монтаж</h3><p>Доставка, профессиональная установка и финальная проверка.</p></article>
+        <div class="work-timeline__list">
+            <article class="work-timeline__item" data-aos="fade-up">
+                <div class="work-timeline__title"><span class="work-timeline__number">01</span><h3>Замеры помещения</h3></div>
+                <div class="work-timeline__body">
+                    <p>Замер — необходимый этап для разработки проекта и точного расчёта стоимости. Дизайнер выезжает к вам, производит все необходимые замеры и обсуждает ваши пожелания.</p>
+                </div>
+            </article>
+
+            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="100">
+                <div class="work-timeline__title"><span class="work-timeline__number">02</span><h3>Проектирование и визуализация</h3></div>
+                <div class="work-timeline__body">
+                    <ul>
+                        <li>Воплощаем ваш дизайн-проект: цвет, фактуру поверхностей и детали отделки.</li>
+                        <li>Учитываем требования к функциональности и конструкции мебели.</li>
+                        <li>Рационально используем особенности помещения.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="200">
+                <div class="work-timeline__title"><span class="work-timeline__number">03</span><h3>Подписание договора и изготовление</h3></div>
+                <div class="work-timeline__body">
+                    <p>На этом этапе мы утверждаем проект и подписываем необходимые документы. Вы вносите частичную предоплату, после чего мы приступаем к изготовлению.</p>
+                </div>
+            </article>
+
+            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="300">
+                <div class="work-timeline__title"><span class="work-timeline__number">04</span><h3>Монтаж</h3></div>
+                <div class="work-timeline__body">
+                    <p>Когда мебель готова на производстве, организуем доставку по вашему адресу и выполняем установку, включая монтаж техники.</p>
+                    <p class="work-timeline__note">* Доставка, сборка и другие услуги, связанные с установкой мебели, оплачиваются отдельно по прайсу.</p>
+                </div>
+            </article>
         </div>
     </div>
 </section>
