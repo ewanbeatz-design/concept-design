@@ -57,10 +57,10 @@ include __DIR__ . '/header.php';
             <p class="hero-lead">Создаём пространство целиком: от первой идеи и 3D-визуализации до производства, монтажа и финального света.</p>
 
             <div class="hero-actions">
-                <a href="#project-quiz" class="btn-solid" data-open-quiz>
+                <button type="button" class="btn-solid" data-bs-toggle="modal" data-bs-target="#project-quiz">
                     Рассчитать проект
                     <i class="bi bi-calculator"></i>
-                </a>
+                </button>
                 <a href="#contact" class="text-link">
                     Обсудить проект <i class="bi bi-arrow-up-right"></i>
                 </a>
@@ -810,17 +810,19 @@ $facadeCollections = dbRows($pdo,
 </section>
 
 <!-- ================= CONFIGURATOR / QUIZ ================= -->
-<section class="section section-light quiz-section quiz-modal" id="project-quiz" role="dialog" aria-modal="true" aria-label="Рассчитать проект CONCEPT Design" aria-hidden="true">
+<section class="modal fade quiz-section quiz-modal" id="project-quiz" tabindex="-1" aria-labelledby="projectQuizTitle" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
     <div class="quiz-modal__bar">
         <a class="quiz-modal__brand" href="#" aria-label="CONCEPT Design">CONCEPT <span>DESIGN</span></a>
         <span class="quiz-modal__note">ПОДБОР ПРОЕКТА</span>
-        <button class="quiz-modal__close" type="button" data-close-quiz aria-label="Закрыть расчёт"><span>Закрыть</span><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+        <button class="quiz-modal__close" type="button" data-bs-dismiss="modal" aria-label="Закрыть расчёт"><span>Закрыть</span><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
     <div class="container">
         <div class="section-head">
             <div>
                 <span class="kicker">07 / Подбор под задачу</span>
-                <h2 class="h-display">Соберём<br><em>первичный запрос</em></h2>
+                <h2 class="h-display" id="projectQuizTitle">Соберём<br><em>первичный запрос</em></h2>
             </div>
             <p class="section-head__text">
                 Ответьте на несколько коротких вопросов — получим представление о задаче
@@ -1049,6 +1051,7 @@ $facadeCollections = dbRows($pdo,
             </div>
 
         </div>
+      </div>
     </div>
 </section>
 
