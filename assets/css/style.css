@@ -42,20 +42,6 @@ html {
     scrollbar-gutter: stable;
 }
 
-body.modal-open {
-    overflow: hidden !important;
-    padding-right: 0 !important;
-}
-body.modal-open {
-    overflow: hidden;
-    padding-right: 15px;
-}
-
-html {
-    /* Не анимируем восстановление позиции браузером при Back/Forward.
-       Плавность оставляем только у явных переходов по якорям в JS. */
-    scroll-behavior: auto;
-}
 
 body {
     font-family: var(--font-main);
@@ -4580,10 +4566,6 @@ html[data-theme="dark"] .production-note {
    PAGE TRANSITIONS — плавные переходы между страницами
    ============================================================ */
 
-/* Убираем мигание при навигации */
-html {
-    scroll-behavior: smooth;
-}
 
 /* Основной контент — анимируем только его, не хедер/футер */
 #main,
