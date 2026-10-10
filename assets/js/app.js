@@ -715,6 +715,7 @@ function initPrefetch() {
             previousBodyOverflow = document.body.style.overflow;
             modal.classList.add('is-open');
             modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('quiz-modal-open');
             document.body.style.overflow = 'hidden';
             const closeButton = modal.querySelector('[data-close-quiz]');
             if (closeButton) closeButton.focus();
@@ -724,6 +725,7 @@ function initPrefetch() {
             if (!modal || !modal.classList.contains('is-open')) return;
             modal.classList.remove('is-open');
             modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('quiz-modal-open');
             document.body.style.overflow = previousBodyOverflow;
             if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
         }
