@@ -6482,7 +6482,8 @@ main {
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 12000;
+    z-index: 2147483000 !important;
+    isolation: isolate;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -6592,4 +6593,23 @@ main {
 }
 @media (prefers-reduced-motion: reduce) {
     .quiz-modal .quiz-step.active { animation: none; }
+}
+
+
+/* Не допускаем наложения фиксированного сайта поверх полноэкранного квиза */
+body.quiz-modal-open {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+}
+body.quiz-modal-open .header,
+body.quiz-modal-open .site-header,
+body.quiz-modal-open .noise,
+body.quiz-modal-open .back-to-top,
+body.quiz-modal-open .contact-fab {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+body.quiz-modal-open .quiz-section.quiz-modal.is-open {
+    visibility: visible !important;
+    pointer-events: auto;
 }
