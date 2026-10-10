@@ -725,49 +725,42 @@ $facadeCollections = dbRows($pdo,
 </section>
 
 <!-- ================= ЭТАПЫ РАБОТЫ ================= -->
-<section class="work-timeline section-md bg-dark" id="process" aria-labelledby="work-timeline-title">
+<section class="section section-light work-process" id="process" aria-labelledby="work-process-title">
     <div class="container">
-        <div class="work-timeline__mark" aria-hidden="true">
-            <img src="images/svg/logo-spin.svg" class="work-timeline__spin" alt="">
+        <div class="section-head">
+            <div>
+                <span class="kicker">05 / Как мы работаем</span>
+                <h2 class="h-display" id="work-process-title">От идеи до<br><em>реализации</em></h2>
+            </div>
+            <p class="section-head__text">
+                Понятный процесс и внимание к деталям — от первого замера до готовой мебели,
+                установленной у вас дома.
+            </p>
         </div>
-        <div class="work-timeline__heading">
-            <span class="kicker">05 / How we work</span>
-            <h2 class="gtrsk text-center" id="work-timeline-title">ЭТАПЫ РАБОТЫ</h2>
-            <p>Понятный процесс — от первого замера до готового интерьера.</p>
-        </div>
 
-        <div class="work-timeline__list">
-            <article class="work-timeline__item" data-aos="fade-up">
-                <div class="work-timeline__title"><span class="work-timeline__number">01</span><h3>Замеры помещения</h3></div>
-                <div class="work-timeline__body">
-                    <p>Замер — необходимый этап для разработки проекта и точного расчёта стоимости. Дизайнер выезжает к вам, производит все необходимые замеры и обсуждает ваши пожелания.</p>
-                </div>
+        <div class="work-process__grid">
+            <article class="work-process__item" data-aos="fade-up">
+                <span class="work-process__number">01 <i>/ 04</i></span>
+                <h3>Замеры помещения</h3>
+                <p>Выезжаем на объект, снимаем точные размеры и обсуждаем ваши пожелания, задачи и особенности пространства.</p>
             </article>
 
-            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="100">
-                <div class="work-timeline__title"><span class="work-timeline__number">02</span><h3>Проектирование и визуализация</h3></div>
-                <div class="work-timeline__body">
-                    <ul>
-                        <li>Воплощаем ваш дизайн-проект: цвет, фактуру поверхностей и детали отделки.</li>
-                        <li>Учитываем требования к функциональности и конструкции мебели.</li>
-                        <li>Рационально используем особенности помещения.</li>
-                    </ul>
-                </div>
+            <article class="work-process__item" data-aos="fade-up" data-aos-delay="100">
+                <span class="work-process__number">02 <i>/ 04</i></span>
+                <h3>Проектирование и визуализация</h3>
+                <p>Подбираем материалы, цвета и отделку, продумываем конструкцию и функциональность мебели, готовим визуализацию проекта.</p>
             </article>
 
-            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="200">
-                <div class="work-timeline__title"><span class="work-timeline__number">03</span><h3>Подписание договора и изготовление</h3></div>
-                <div class="work-timeline__body">
-                    <p>На этом этапе мы утверждаем проект и подписываем необходимые документы. Вы вносите частичную предоплату, после чего мы приступаем к изготовлению.</p>
-                </div>
+            <article class="work-process__item" data-aos="fade-up" data-aos-delay="200">
+                <span class="work-process__number">03 <i>/ 04</i></span>
+                <h3>Договор и изготовление</h3>
+                <p>Утверждаем проект, фиксируем договорённости и стоимость. После согласования и предоплаты запускаем заказ в производство.</p>
             </article>
 
-            <article class="work-timeline__item" data-aos="fade-up" data-aos-delay="300">
-                <div class="work-timeline__title"><span class="work-timeline__number">04</span><h3>Монтаж</h3></div>
-                <div class="work-timeline__body">
-                    <p>Когда мебель готова на производстве, организуем доставку по вашему адресу и выполняем установку, включая монтаж техники.</p>
-                    <p class="work-timeline__note">* Доставка, сборка и другие услуги, связанные с установкой мебели, оплачиваются отдельно по прайсу.</p>
-                </div>
+            <article class="work-process__item" data-aos="fade-up" data-aos-delay="300">
+                <span class="work-process__number">04 <i>/ 04</i></span>
+                <h3>Доставка и монтаж</h3>
+                <p>Доставляем готовую мебель и выполняем установку. Монтаж техники и дополнительные услуги рассчитываются отдельно по прайсу.</p>
             </article>
         </div>
     </div>
