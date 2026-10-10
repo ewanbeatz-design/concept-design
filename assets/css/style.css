@@ -6966,3 +6966,40 @@ html[data-theme] .hero .hero-bottom {
     color: #fff;
 }
 
+/* Final pass: links, icon controls and floating utilities in inverted panels */
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) a:not(.btn):not(.btn-solid):not(.btn--dark),
+html[data-theme] :is(
+    .section-dark, .section--dark, .split-dark, .partners, .why-us,
+    .design-cta, .footer, .cta
+) :is(button:not(.btn):not(.btn-solid), i, .footer-nav a, .footer-contacts a) {
+    color: #11110f !important;
+}
+
+html[data-theme] :is(.back-to-top, .contact-fab__item) {
+    background: #f6f4ef !important;
+    color: #11110f !important;
+    border-color: rgba(17,17,15,.18) !important;
+}
+
+html[data-theme] :is(.back-to-top, .contact-fab__item) :is(i, span, svg) {
+    color: #11110f !important;
+}
+
+html[data-theme] .back-to-top:hover,
+html[data-theme] .contact-fab__item:hover {
+    background: #e8e5de !important;
+    color: #11110f !important;
+}
+
+html[data-theme] .section-light .text-link.dark:hover {
+    color: #c79d75 !important;
+}
+
+/* Keep image-backed cards and their overlays readable, without tinting photos. */
+html[data-theme] :is(.project-card, .project-gallery__item, .project-tile, .video-tile) {
+    color: #fff;
+}
+
